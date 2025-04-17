@@ -9,11 +9,11 @@
           <li><a href="{% url "home" %}" class="nav-link px-2 link-secondary">Hello English</a></li>
           <li><a href="{% url "create_room" %}" class="nav-link px-2 link-body-emphasis">Repeat words</a></li>
           <li><a href="{% url "new_word" %}" class="nav-link px-2 link-body-emphasis">Add new word</a></li>
-          {% comment %} <li><a href="#" class="nav-link px-2 link-body-emphasis">Products</a></li> {% endcomment %}
         </ul>
 
-        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-          <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+        <form action="{% url "search" %}" method="get"  class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+          {% csrf_token %}
+          <input type="search" name="search" class="form-control" placeholder="Search..." aria-label="Search">
         </form>
 
         <div class="dropdown text-end" bis_skin_checked="1">

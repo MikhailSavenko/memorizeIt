@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block content %}
+  <div class="container text-center mt-5">
+    <ul style="list-style-type: none;">
+        {% for word in words %}
+            <li class="display-4">🔎 {{ word.word }} - {{ word.translation}}</li>
+            <br>
+            <p><button onclick="history.back()" class="btn btn-primary">Back to repeating</button></p>
+        {% empty %}
+            <li>No words found.</li>
+        {% endfor %}
+    </ul>
+  </div>
+{% endblock content %}

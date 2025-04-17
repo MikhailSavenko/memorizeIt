@@ -3,13 +3,25 @@ from django.views.generic import CreateView, FormView
 from word.forms import WriteWordForm, ParametersForm, RepeatRoomForm
 from word.models import Word
 from django.urls import reverse_lazy
+from django.db.models import Q
 
 
 def put_words_in_cookies(request, words_list):
     if not words_list:
-        raise ValueError("Нет слов.")
+        raise ValueError("No words.")
     request.session["words_ids"] = [w.id for w in words_list]
 
+
+def search(request):
+    words = []
+    query = ""
+    if request.method == "GET":
+        query = request.GET.get("search")
+        if not isinstance(query, str):
+            raise ValueError("Only string")
+        words = Word.objects.filter(Q(word__icontains=query)|Q(translation__icontains=query))
+    return render(request, "word/search_alive.html", context={"words": words, "query": query})
+    
 
 def index(request):
     return render(request, "word/index.html")
@@ -35,14 +47,15 @@ class CreateRoom(FormView):
 
     def form_valid(self, form):
         cleaned_data = form.cleaned_data
-        
+        print(cleaned_data)
         from_num = cleaned_data.get("from_num")
         to_num = cleaned_data.get("to_num")
         all_words = cleaned_data.get("all_words")
-
+        print(from_num)
         if all_words:
             words_list_for_repeat = Word.objects.all()
         elif from_num and to_num:
+            print(from_num)
             words_list_for_repeat = Word.objects.filter(id__gte=from_num, id__lte=to_num)
 
         put_words_in_cookies(request=self.request, words_list=words_list_for_repeat)
