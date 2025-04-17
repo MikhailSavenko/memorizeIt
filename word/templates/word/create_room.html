@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+
+{% block title %}{{ title }}{% endblock title %}
+
+
+{% block content %}
+    <div class="croom-form">
+        <form method="post" action={% url "create_room" %}>
+            <h2>You have {{ words_count }} words in your dictionary</h2>
+            <h3>Which words do you repead today?</h3>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <span>{{ error }}</span>
+            <button class='btn btn-success' type="submit">Repeat Words</button>
+        </form>
+    </div>
+{% endblock content %}

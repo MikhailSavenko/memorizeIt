@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+
+{% block title %}{{ title }}{% endblock title %}
+
+
+{% block content %}
+    <div class="write-form">
+        <form method="post" action={% url "new_word" %}>
+            {% csrf_token %}
+            <h1>Add the words in your dictionary!</h1>
+            {% for field in form %}
+                <p>{{ field }}</p>   
+            {% endfor %}
+            <span>{{ error }}</span>
+            <button class='btn btn-success' type="submit">Add the word</button>
+        </form>
+    </div>
+{% endblock content %}
