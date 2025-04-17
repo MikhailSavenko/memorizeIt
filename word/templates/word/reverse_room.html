@@ -6,7 +6,7 @@
 {% block content %}
     <div class="room-form">
         <form method="post" action={% url "reverse_room" %}>
-            <h1 class="display-3"><b>{{ word }}..</b></h2>
+            <h1 class="display-3"><b>{{ word }} - ?</b></h2>
             <h3 class="display-4">Translate the word above. You know it 🤓</h3>
             {% csrf_token %}
             <input type="hidden" name="word_id" value="{{ word_id }}">
