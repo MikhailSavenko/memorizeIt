@@ -28,7 +28,8 @@ class ParametersForm(forms.Form):
         if from_num is not None and to_num is not None and all_words is True:
             raise forms.ValidationError("All params not allow")
         # Можно добавить дополнительные проверки?
-
+        if from_num is None and to_num is None and not all_words:
+            raise forms.ValidationError("Empty all params!")
         return cleaned_data
     
 

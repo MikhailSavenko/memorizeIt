@@ -48,8 +48,8 @@ class CreateRoom(FormView):
     def form_valid(self, form):
         cleaned_data = form.cleaned_data
         print(cleaned_data)
-        from_num = int(cleaned_data.get("from_num"))
-        to_num = int(cleaned_data.get("to_num"))
+        from_num = cleaned_data.get("from_num")
+        to_num = cleaned_data.get("to_num")
         all_words = cleaned_data.get("all_words")
         if all_words:
             words_list_for_repeat = Word.objects.all()
@@ -87,8 +87,8 @@ class RepeatRoom(FormView):
         word_id = cleaned_data.get("word_id")
         word = get_object_or_404(Word, id=word_id)
         # если неверное выведем error но не обновим страницу
-        translations_list = [t.strip() for t in word.translation.split(",")]
-        answer = answer.strip()
+        translations_list = [t.strip().lower() for t in word.translation.split(",")]
+        answer = answer.strip().lower()
         if answer not in translations_list and answer != word.translation:
             form.add_error("answer", "Incorrect translation!")
             return self.form_invalid(form)
@@ -98,8 +98,9 @@ class RepeatRoom(FormView):
         if word_id in words_ids:
             words_ids.remove(word_id)
         self.request.session["words_ids"] = words_ids
-        
-        return redirect("create_room")
+        if not words_ids:
+            return redirect("create_room") 
+        return redirect("room")
 
     def pull_out_words(self, words_ids: list):
         if not words_ids:
