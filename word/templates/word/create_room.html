@@ -7,11 +7,13 @@
 {% block content %}
     <div class="croom-form">
         <form method="post" action={% url "create_room" %}>
-            <h2>You have {{ words_count }} words in your dictionary</h2>
-            <h3>Which words do you repead today?</h3>
+            <h2 class="display-4">You have {{ words_count }} words in your dictionary</h2>
+            <h3 class="display-5">Which words do you repeat today?</h3>
             {% csrf_token %}
-            {{ form.as_p }}
-            <span>{{ error }}</span>
+            <p>{{ form.from_num }}</p>
+            <p>{{ form.to_num }}</p>
+            <p class="display-7">{{ form.all_words.label }} -> {{ form.all_words }}</p>
+            <span>{{ form.error}}</span>
             <button class='btn btn-success' type="submit">Repeat Words</button>
         </form>
     </div>

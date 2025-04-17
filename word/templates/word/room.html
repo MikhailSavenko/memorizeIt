@@ -6,13 +6,13 @@
 {% block content %}
     <div class="room-form">
         <form method="post" action={% url "room" %}>
-            <h1>{{ word }}</h2>
-            <h3>write your answer below</h3>
+            <h1 class="display-3"><b>{{ word }}..</b></h2>
+            <h3 class="display-4">Translate the word above. You know it 🤓</h3>
             {% csrf_token %}
             <input type="hidden" name="word_id" value="{{ word_id }}">
-            {{ form.answer }}
+            <p>{{ form.answer }}</p>
             {% for error in form.answer.errors %}
-            <div class="error">{{ error }}</div>
+                <div class="error">{{ error }}</div>
             {% endfor %}
             <button class='btn btn-success' type="submit">Check Answer</button>
         </form>

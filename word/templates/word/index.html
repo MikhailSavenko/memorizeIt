@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block content %}
+
+<div class="container text-center mt-5">
+    <h1 class="display-4">Welcome to MemorizeIt!</h1>
+    <p class="lead">A simple tool to help you repeat and memorize English words effectively.</p>
+    <p>You could add new word in your dictionary, choice range words for repeat and practice recent new words in repeat mode!</p>
+    <a href="{% url 'create_room' %}" class="btn btn-primary btn-lg mt-3">Start Repeating</a>
+</div>
+
+{% endblock content %}

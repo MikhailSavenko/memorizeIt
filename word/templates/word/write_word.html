@@ -8,7 +8,7 @@
     <div class="write-form">
         <form method="post" action={% url "new_word" %}>
             {% csrf_token %}
-            <h1>Add the words in your dictionary!</h1>
+            <h1 class="display-4">Add the words in your dictionary 📖</h1>
             {% for field in form %}
                 <p>{{ field }}</p>   
             {% endfor %}

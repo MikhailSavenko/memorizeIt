@@ -11,6 +11,10 @@ def put_words_in_cookies(request, words_list):
     request.session["words_ids"] = [w.id for w in words_list]
 
 
+def index(request):
+    return render(request, "word/index.html")
+
+
 class WrideWord(CreateView):
 
     form_class = WriteWordForm

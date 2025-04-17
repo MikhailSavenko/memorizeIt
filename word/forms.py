@@ -4,14 +4,19 @@ from word.models import Word
 
 
 class RepeatRoomForm(forms.Form):
-    answer = forms.CharField(required=True, label="Перевод слова")
+    answer = forms.CharField(required=True, widget=forms.TextInput(
+        attrs={"class": "form-control", "placeholder": "Write your answer.."}))
     word_id = forms.IntegerField(widget=forms.HiddenInput())
 
 
 class ParametersForm(forms.Form):
-    from_num = forms.IntegerField(required=False, label="Write the init number in range")
-    to_num = forms.IntegerField(required=False, label="Write the finish number in range")
-    all_words = forms.BooleanField(required=False, label="OR pick all words =)")
+    from_num = forms.IntegerField(required=False, widget=forms.NumberInput(
+        attrs={"class": "form-control", "placeholder": "From which word number to start?"}
+    ))
+    to_num = forms.IntegerField(required=False, widget=forms.NumberInput(
+        attrs={"class": "form-control", "placeholder": "Enter the last word number in range"}
+    ))
+    all_words = forms.BooleanField(required=False, label="Or pick all words")
     
     def clean(self):
         cleaned_data = super().clean()
