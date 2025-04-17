@@ -11,12 +11,14 @@ class RepeatRoomForm(forms.Form):
 
 class ParametersForm(forms.Form):
     from_num = forms.IntegerField(required=False, widget=forms.NumberInput(
-        attrs={"class": "form-control", "placeholder": "From which word number to start?"}
+        attrs={"class": "form-control", "placeholder": "Enter from which word number to start"}
     ))
     to_num = forms.IntegerField(required=False, widget=forms.NumberInput(
         attrs={"class": "form-control", "placeholder": "Enter the last word number in range"}
     ))
-    all_words = forms.BooleanField(required=False, label="Or pick all words")
+    all_words = forms.BooleanField(required=False, label="All words")
+
+    reverse = forms.BooleanField(required=False, label="Reverse pairs")
     
     def clean(self):
         cleaned_data = super().clean()
@@ -24,7 +26,7 @@ class ParametersForm(forms.Form):
         from_num = cleaned_data.get("from_num")
         to_num = cleaned_data.get("to_num")
         all_words = cleaned_data.get("all_words")
-
+        
         if from_num is not None and to_num is not None and all_words is True:
             raise forms.ValidationError("All params not allow")
         # Можно добавить дополнительные проверки?
