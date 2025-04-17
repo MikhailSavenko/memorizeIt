@@ -67,17 +67,14 @@ class RepeatRoom(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        
         words_ids = self.request.session.get("words_ids")
-        print(words_ids)
         words_list = list(self.pull_out_words(words_ids=words_ids))
         # Получаем слово
         word = words_list[-1]
         context["word"] = word.word
-        # Передаем wordid чтобы потом автоматически вставить в форму 
+        # Передаем word_id чтобы потом автоматически вставить в форму 
         context["word_id"] = word.id
-        
-        # # Обновляем куки на клиенте, убираем этот id
-        # put_words_in_cookies(words_list=words_list)
         return context
 
     def form_valid(self, form):
@@ -104,6 +101,6 @@ class RepeatRoom(FormView):
 
     def pull_out_words(self, words_ids: list):
         if not words_ids:
-            raise ValueError("Нет слов")
+            raise ValueError("No words!")
         words_list = Word.objects.filter(id__in=words_ids)
         return words_list
