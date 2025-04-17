@@ -25,10 +25,8 @@ class ParametersForm(forms.Form):
         to_num = cleaned_data.get("to_num")
         all_words = cleaned_data.get("all_words")
 
-        if (from_num, to_num) is not None and all_words:
-            print("ТУТУТУТУТУТУТУТ")
-            print(all_words)
-            raise forms.ValidationError("Введите диапазон слов либо выберите все слова! Что-то одно.")
+        if from_num is not None and to_num is not None and all_words is True:
+            raise forms.ValidationError("All params not allow")
         # Можно добавить дополнительные проверки?
 
         return cleaned_data

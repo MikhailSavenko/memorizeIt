@@ -48,16 +48,13 @@ class CreateRoom(FormView):
     def form_valid(self, form):
         cleaned_data = form.cleaned_data
         print(cleaned_data)
-        from_num = cleaned_data.get("from_num")
-        to_num = cleaned_data.get("to_num")
+        from_num = int(cleaned_data.get("from_num"))
+        to_num = int(cleaned_data.get("to_num"))
         all_words = cleaned_data.get("all_words")
-        print(from_num)
         if all_words:
             words_list_for_repeat = Word.objects.all()
         elif from_num and to_num:
-            print(from_num)
             words_list_for_repeat = Word.objects.filter(id__gte=from_num, id__lte=to_num)
-
         put_words_in_cookies(request=self.request, words_list=words_list_for_repeat)
         
         return redirect("room")
@@ -70,8 +67,8 @@ class RepeatRoom(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print("hello")
         words_ids = self.request.session.get("words_ids")
+        print(words_ids)
         words_list = list(self.pull_out_words(words_ids=words_ids))
         # Получаем слово
         word = words_list[-1]
@@ -90,10 +87,9 @@ class RepeatRoom(FormView):
         word_id = cleaned_data.get("word_id")
         word = get_object_or_404(Word, id=word_id)
         # если неверное выведем error но не обновим страницу
-        print(answer)
-        print(word.translation)
-        if answer != word.translation:
-            print("hi")
+        translations_list = [t.strip() for t in word.translation.split(",")]
+        answer = answer.strip()
+        if answer not in translations_list and answer != word.translation:
             form.add_error("answer", "Incorrect translation!")
             return self.form_invalid(form)
         # если верно, удалим слово из сессии и перейдем снова на room
@@ -103,7 +99,7 @@ class RepeatRoom(FormView):
             words_ids.remove(word_id)
         self.request.session["words_ids"] = words_ids
         
-        return redirect("room")
+        return redirect("create_room")
 
     def pull_out_words(self, words_ids: list):
         if not words_ids:
