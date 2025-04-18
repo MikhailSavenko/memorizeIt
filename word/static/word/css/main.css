@@ -37,3 +37,8 @@
     display: inline-block;   /* Чтобы не растягивался на всю ширину */
     margin-top: 20px;
 }
+
+
+.dictionary-content h2 {
+    margin-top: 160px;  /* Устанавливаем отступ сверху */
+}

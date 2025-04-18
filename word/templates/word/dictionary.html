@@ -7,9 +7,11 @@
   <div class="dictionary">
     <div class="dictionary-content">
       <h2 class="display-4">Your dictionary 📘</h2>
+      <br>
       <form action="{% url "dictionary" %}" method="get">
         <input type="text" name="search_dict" placeholder="Search by ID or word/translation" class="form-control" />
       </form>
+      <br>
       <table class="table table-bordered table-hover">
         <thead class="thead-light">
           <tr>
