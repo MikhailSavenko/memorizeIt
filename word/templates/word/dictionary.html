@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 
 {% block title %}{{ title }}{% endblock title %}
 
@@ -7,6 +7,9 @@
   <div class="dictionary">
     <div class="dictionary-content">
       <h2 class="display-4">Your dictionary 📘</h2>
+      <form action="{% url "dictionary" %}" method="get">
+        <input type="text" name="search_dict" placeholder="Search by ID or word/translation" class="form-control" />
+      </form>
       <table class="table table-bordered table-hover">
         <thead class="thead-light">
           <tr>
@@ -19,7 +22,7 @@
         </thead>
         <tbody>
           {% for word in words %}
-            <tr>
+            <tr id="word-{{ word.id }}">
               <td>{{ word.id }}</td>
               <td>{{ word.word }}</td>
               <td>{{ word.part_of_speech }}</td>
@@ -32,4 +35,8 @@
       </div>
     </div>
   </div>
+{% if highlight_id %}
+  <div id="dictionary-table" data-highlight-id="{{ highlight_id }}"></div>
+  <script src="{% static 'word/js/dict_search.js' %}"></script>
+{% endif %}
 {% endblock content %}

@@ -162,3 +162,16 @@ class Dictionary(ListView):
     model = Word
     template_name = "word/dictionary.html"
     context_object_name = "words"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        query = self.request.GET.get("search_dict")
+        if query:
+            word = Word.objects.filter(
+                Q(id__icontains=query) |
+                Q(word__icontains=query) |
+                Q(translation__icontains=query)
+            ).first()
+            if word:
+                context["highlight_id"] = word.id  
+        return context
