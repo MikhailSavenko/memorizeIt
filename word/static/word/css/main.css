@@ -19,3 +19,21 @@
     align-items: center;
     height: 80vh;
 }
+
+.dictionary {
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+.dictionary-content {
+    text-align: center;
+}
+
+.dict_words ul {
+    text-align: left;
+    display: inline-block;   /* Чтобы не растягивался на всю ширину */
+    margin-top: 20px;
+}

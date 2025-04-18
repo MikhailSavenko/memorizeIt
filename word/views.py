@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import CreateView, FormView
+from django.views.generic import CreateView, FormView, ListView
 from word.forms import WriteWordForm, ParametersForm, RepeatRoomForm
 from word.models import Word
 from django.urls import reverse_lazy
@@ -155,3 +155,10 @@ class ReverseRepeatRoom(FormView):
         if not words_ids:
             return redirect("create_room") 
         return redirect("reverse_room")
+    
+
+class Dictionary(ListView):
+
+    model = Word
+    template_name = "word/dictionary.html"
+    context_object_name = "words"
