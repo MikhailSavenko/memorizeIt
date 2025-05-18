@@ -1,7 +1,7 @@
 from django import forms
 
 from word.models import Word
-
+from word.services import transcription_by_wordsapi
 
 class RepeatRoomForm(forms.Form):
     answer = forms.CharField(required=True, widget=forms.TextInput(
@@ -51,10 +51,23 @@ class WriteWordForm(forms.ModelForm):
             }),
             "transcription": forms.TextInput(attrs={
                 "class": "form-control",
-                "placeholder": "Write transcription"
+                "placeholder": "Transcription is not required. You can keep this empty"
             }),
             "translation": forms.TextInput(attrs={
                 "class": "form-control",
                 "placeholder": "Write translation. If their is many use comma: <word>, <word>,.."
             }),
         }
+    
+    def clean(self):
+        data = super().clean()
+        transcription = data.get("transcription")
+        word = data.get("word")
+       
+        if not transcription:
+            get_transcription = transcription_by_wordsapi(word=word)
+
+            if get_transcription:
+                data["transcription"] = get_transcription
+                
+        return data
