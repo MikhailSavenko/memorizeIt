@@ -13,8 +13,10 @@
 <body>
     {% include "word/header.html" %}
     <main>
-        {% block content %}
-        {% endblock content %}
+        <div class="container mt-4">
+            {% block content %}
+            {% endblock content %}
+        </div>
     </main>
     
 </body>

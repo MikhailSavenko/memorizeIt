@@ -20,6 +20,3 @@ def transcription_by_wordsapi(word: str) -> dict:
     pronunciation = data.get("pronunciation").get("all")
     
     return pronunciation
-
-
-transcription_by_wordsapi("plain")
