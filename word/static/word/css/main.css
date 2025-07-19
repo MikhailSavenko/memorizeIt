@@ -30,7 +30,7 @@
 
 .dictionary-content {
     text-align: center;
-    margin-top: 210px;
+    margin-top: 250px;
 }
 
 .dict_words ul {
@@ -41,5 +41,7 @@
 
 
 .dictionary-content h2 {
-    margin-top: 160px;  /* Устанавливаем отступ сверху */
+    margin-top: 250px;  
 }
+
+/* Устанавливаем отступ сверху */
