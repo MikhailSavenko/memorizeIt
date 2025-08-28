@@ -1,15 +1,15 @@
 from django.db import models
 
 PART_OF_SPEECH = [
-    ("noun", "Noun"),
-    ("adjective", "Adjective"),
-    ("verb", "Verb"),
-    ("adverb", "Adverb"),
-    ("phrase", "Phrase"),
-    ("particle", "Particle"),
-    ("preposition", "Preposition"),
-    ("pronoun", "Pronoun"),
-    ("another", "Another")
+    ("noun", "Noun/Существительное"),
+    ("adjective", "Adjective/Прилагательное"),
+    ("verb", "Verb/Глагол"),
+    ("adverb", "Adverb/Наречие"),
+    ("phrase", "Phrase/Фраза"),
+    ("particle", "Particle/Частица"),
+    ("preposition", "Preposition/Предлог"),
+    ("pronoun", "Pronoun/Местоимение"),
+    ("another", "Another/Другое(Когда не знаешь)")
 ]
 
 
@@ -23,7 +23,7 @@ class Word(models.Model):
 
 
     class Meta:
-        constraint = [
+        constraints = [
             models.UniqueConstraint(fields=["word", "part_of_speech"], name="unique_word_part_of_speech")
         ]
 
