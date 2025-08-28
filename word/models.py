@@ -20,7 +20,12 @@ class Word(models.Model):
     translation = models.CharField(max_length=255, verbose_name="Translation", blank=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
+    image_url = models.URLField(max_length=512, blank=True, null=True, verbose_name="Image URL")
+
+    # Это полезно для реализации интервального повторения.
+    difficulty_level = models.IntegerField(default=0, verbose_name="Difficulty level")
 
     class Meta:
         constraints = [
