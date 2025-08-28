@@ -20,10 +20,11 @@ def transcription_by_wordsapi(word: str) -> dict:
         response = requests.get(f"https://wordsapiv1.p.rapidapi.com/words/{word}/pronunciation",
                                 headers=headers)
         data = response.json()
-        pronunciation = data.get("pronunciation", {"all": ""}).get("all")
+        pronunciation = data.get("pronunciation", {"all": ""})["all"]
+        return pronunciation
     except Exception as e:
         logger.error(f"Ошибка при получении транскрипции {e}.")
-    finally:
         pronunciation = ""
         return pronunciation
+        
 

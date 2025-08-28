@@ -65,6 +65,7 @@ class WriteWordForm(forms.ModelForm):
         word = data.get("word")
        
         if not transcription:
+
             get_transcription = transcription_by_wordsapi(word=word)
 
             if get_transcription:

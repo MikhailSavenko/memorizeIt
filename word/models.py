@@ -8,6 +8,7 @@ PART_OF_SPEECH = [
     ("phrase", "Phrase"),
     ("particle", "Particle"),
     ("preposition", "Preposition"),
+    ("pronoun", "Pronoun"),
     ("another", "Another")
 ]
 
@@ -20,5 +21,12 @@ class Word(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+
+    class Meta:
+        constraint = [
+            models.UniqueConstraint(fields=["word", "part_of_speech"], name="unique_word_part_of_speech")
+        ]
+
     def __str__(self):
         return f"{self.word}--{self.translation}"
+    
