@@ -1,0 +1,47 @@
+.write-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+
+.croom-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+.room-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+.dictionary {
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+.dictionary-content {
+    text-align: center;
+    margin-top: 250px;
+}
+
+.dict_words ul {
+    text-align: left;
+    display: inline-block;   /* Чтобы не растягивался на всю ширину */
+    margin-top: 20px;
+}
+
+
+.dictionary-content h2 {
+    margin-top: 250px;  
+}
+
+/* Устанавливаем отступ сверху */
