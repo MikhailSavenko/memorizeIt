@@ -13,10 +13,11 @@ def pull_out_words(words_ids: list):
     return words_list
 
 
-def put_words_in_cookies(request, words_list):
-    if not words_list:
+def put_words_in_cookies(request, words_ids_list):
+    """Кладет ids Word в куки"""
+    if not words_ids_list:
         raise ValueError("No words.")
-    request.session["words_ids"] = [w.id for w in words_list]
+    request.session["words_ids"] = words_ids_list
 
 
 def search(request):
@@ -49,7 +50,7 @@ class CreateRoom(FormView):
     def get_context_data(self, **kwargs) -> dict:
         """Получает контекст и добавляет поле с количеством слов"""
         context = super().get_context_data(**kwargs)
-        words_count = Word.objects.count()
+        words_count = Word.objects.count()                   # можно в дальнейшем вынести в контекстный процессор или Simple Tag
         context["words_count"] = words_count
         return context
 
@@ -60,11 +61,16 @@ class CreateRoom(FormView):
         to_num = cleaned_data.get("to_num")
         all_words = cleaned_data.get("all_words")
         reverse = cleaned_data.get("reverse")
+
+        words_ids_list_for_repeat = []
+
         if all_words:
-            words_list_for_repeat = Word.objects.all()
+            words_ids_list_for_repeat = list(Word.objects.all().values_list("id", flat=True))
         elif from_num and to_num:
-            words_list_for_repeat = Word.objects.filter(id__gte=from_num, id__lte=to_num)
-        put_words_in_cookies(request=self.request, words_list=words_list_for_repeat)
+            words_ids_list_for_repeat = list(Word.objects.filter(id__gte=from_num, id__lte=to_num).values_list("id", flat=True))
+
+        put_words_in_cookies(request=self.request, words_ids_list=words_ids_list_for_repeat)
+
         if reverse:
             return redirect("reverse_room")
         return redirect("room")
