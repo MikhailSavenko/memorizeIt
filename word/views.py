@@ -13,8 +13,8 @@ def pull_out_words(words_ids: list):
     return words_list
 
 
-def put_words_in_cookies(request, words_ids_list):
-    """Кладет ids Word в куки"""
+def set_word_ids_in_session(request, words_ids_list):
+    """Кладет ids Word в сессию"""
     if not words_ids_list:
         raise ValueError("No words.")
     request.session["words_ids"] = words_ids_list
@@ -69,7 +69,7 @@ class CreateRoom(FormView):
         elif from_num and to_num:
             words_ids_list_for_repeat = list(Word.objects.filter(id__gte=from_num, id__lte=to_num).values_list("id", flat=True))
 
-        put_words_in_cookies(request=self.request, words_ids_list=words_ids_list_for_repeat)
+        set_word_ids_in_session(request=self.request, words_ids_list=words_ids_list_for_repeat)
 
         if reverse:
             return redirect("reverse_room")
