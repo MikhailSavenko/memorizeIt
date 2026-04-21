@@ -8,6 +8,10 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 
 API_KEY = os.getenv("API_KEY")
+PROXIES = {
+    "http": os.getenv("HTTP_proxy"),
+    "https": os.getenv("HTTPS_proxy")
+}
 
 
 def transcription_by_wordsapi(word: str) -> dict|None:
