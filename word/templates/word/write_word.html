@@ -6,11 +6,18 @@
 
 {% block content %}
     <div class="write-form">
-        <form method="post" action={% url "new_word" %}>
+        <form method="post" action="{% url 'new_word' %}">
             {% csrf_token %}
             <h3 class="display-4">Add the words in your dictionary 📖</h1>
+              <div class="alert alert-danger">
+                {% if form.non_field_errors %}
+                  {% for error in form.non_field_errors %} 
+                          <p>{{ error }}</p>
+                  {% endfor %}
+                {% endif %}
+              </div>
             {% for field in form %}
-                <p>{{ field }}</p>   
+                <p>{{ field }}</p>
             {% endfor %}
             <span>{{ error }}</span>
             <button class='btn btn-success' type="submit">Add the word</button>

@@ -55,7 +55,7 @@ class WriteWordForm(forms.ModelForm):
             }),
             "translation": forms.TextInput(attrs={
                 "class": "form-control",
-                "placeholder": "Write translation. If their is many use comma: <word>, <word>,.."
+                "placeholder": "Write translation. If their is many use comma: word, word,.."
             }),
         }
     
