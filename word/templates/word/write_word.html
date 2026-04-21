@@ -9,13 +9,11 @@
         <form method="post" action="{% url 'new_word' %}">
             {% csrf_token %}
             <h3 class="display-4">Add the words in your dictionary 📖</h1>
-              <div class="alert alert-danger">
-                {% if form.non_field_errors %}
-                  {% for error in form.non_field_errors %} 
-                          <p>{{ error }}</p>
-                  {% endfor %}
-                {% endif %}
-              </div>
+              {% if form.non_field_errors %}          
+                {% for error in form.non_field_errors %} 
+                  <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+              {% endif %}
             {% for field in form %}
                 <p>{{ field }}</p>
             {% endfor %}
