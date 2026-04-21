@@ -34,7 +34,7 @@ def index(request):
     return render(request, "word/index.html")
 
 
-class WrideWord(CreateView):
+class WriteWord(CreateView):
 
     form_class = WriteWordForm
     template_name = "word/write_word.html"
