@@ -47,14 +47,15 @@ class CreateRoom(FormView):
     template_name = "word/create_room.html"
     
     def get_context_data(self, **kwargs) -> dict:
+        """Получает контекст и добавляет поле с количеством слов"""
         context = super().get_context_data(**kwargs)
         words_count = Word.objects.count()
         context["words_count"] = words_count
         return context
 
     def form_valid(self, form):
+        """Создаем набор слов для повторения исходя из заданных в форме параметров"""
         cleaned_data = form.cleaned_data
-        print(cleaned_data)
         from_num = cleaned_data.get("from_num")
         to_num = cleaned_data.get("to_num")
         all_words = cleaned_data.get("all_words")
@@ -164,6 +165,7 @@ class Dictionary(ListView):
     context_object_name = "words"
 
     def get_context_data(self, **kwargs):
+        """Получает контекст достает из поля введенный параметр поиска, ищет слово и добаляет его pk в контекст для JS"""
         context = super().get_context_data(**kwargs)
         query = self.request.GET.get("search_dict")
         if query:
