@@ -63,12 +63,12 @@ class WriteWordForm(forms.ModelForm):
         data = super().clean()
         transcription = data.get("transcription")
         word = data.get("word")
-       
-        if not transcription:
+        # Пока разработка нет смысла делать запросы к апи попусту #РАССКОММЕНТИРОВАТЬ
+        # if not transcription:
 
-            get_transcription = transcription_by_wordsapi(word=word)
+        #     get_transcription = transcription_by_wordsapi(word=word)
 
-            if get_transcription:
-                data["transcription"] = get_transcription
+        #     if get_transcription:
+        #         data["transcription"] = get_transcription
                 
         return data
