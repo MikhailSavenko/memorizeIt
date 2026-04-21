@@ -173,5 +173,5 @@ class Dictionary(ListView):
                 Q(translation__icontains=query)
             ).first()
             if word:
-                context["highlight_id"] = word.id  
+                context["highlight_id"] = word.pk
         return context
