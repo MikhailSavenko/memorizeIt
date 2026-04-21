@@ -7,14 +7,13 @@
   <div class="container text-center mt-5">
     <ul style="list-style-type: none;">
         {% for word in words %}
-            <li class="display-4">🔎 {{ word.word }} - {{ word.translation}} - {{ word.transcriprions}}</li>
+            <li class="display-4">🔎 {{ word.word }} - {{ word.translation}} - {{ word.part_of_speech }}</li>
             <br>
-            <p><button onclick="history.back()" class="btn btn-primary">Back to repeating</button></p>
         {% empty %}
             <li>No words found.</li>
             <br>
-            <p><button onclick="history.back()" class="btn btn-primary">Back to repeating</button></p>
         {% endfor %}
+        <p><button onclick="history.back()" class="btn btn-primary">Go Back</button></p>
     </ul>
   </div>
 {% endblock content %}
