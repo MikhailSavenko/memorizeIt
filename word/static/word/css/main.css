@@ -5,7 +5,6 @@
     height: 80vh;
 }
 
-
 .croom-form {
     display: flex;
     justify-content: center;
@@ -21,16 +20,16 @@
 }
 
 .dictionary {
-    margin-top: 100px;
+    margin-top: 50px;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 80vh;
+    min-height: 100vh;
+
 }
 
 .dictionary-content {
     text-align: center;
-    margin-top: 250px;
+    width: 80%;
 }
 
 .dict_words ul {
@@ -41,7 +40,7 @@
 
 
 .dictionary-content h2 {
-    margin-top: 250px;  
+    margin-bottom: 30px; 
 }
 
 /* Устанавливаем отступ сверху */
