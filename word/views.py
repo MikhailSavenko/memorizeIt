@@ -7,8 +7,9 @@ from django.db.models import Q
 
 
 def pull_out_words(words_ids: list):
+    """Получаем QuerySet объектов Word по списку их ID"""
     if not words_ids:
-        raise ValueError("No words!")
+        return Word.objects.none()
     words_list = Word.objects.filter(id__in=words_ids)
     return words_list
 
@@ -90,7 +91,7 @@ class RepeatRoom(FormView):
         word = words_list[-1]
         context["word"] = word.word
         # Передаем word_id чтобы потом автоматически вставить в форму 
-        context["word_id"] = word.id
+        context["word_id"] = word.pk
         return context
 
     def form_valid(self, form):
