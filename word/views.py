@@ -90,6 +90,7 @@ class RepeatRoom(FormView):
         # Получаем слово
         word = words_list[-1]
         context["word"] = word.word
+        context["part_of_speech"] = word.part_of_speech
         # Передаем word_id чтобы потом автоматически вставить в форму 
         context["word_id"] = word.pk
         return context
@@ -107,6 +108,11 @@ class RepeatRoom(FormView):
         
         if answer not in translations_list:
             form.add_error("answer", "Incorrect translation!")
+
+            data = form.data.copy()
+            data["answer"] = ""
+            form.data = data
+
             return self.form_invalid(form)
         
         # если верно, удалим слово из сессии и перейдем снова на room
