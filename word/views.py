@@ -85,7 +85,7 @@ class RepeatRoom(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        words_ids = self.request.session.get("words_ids")
+        words_ids = self.request.session.get("words_ids", [])
         words_list = list(pull_out_words(words_ids=words_ids))
         # Получаем слово
         word = words_list[-1]
@@ -105,7 +105,7 @@ class RepeatRoom(FormView):
         translations_list = [t.strip().lower() for t in word.translation.split(",")]
         answer = answer.strip().lower()
         
-        if answer not in translations_list and answer != word.translation:
+        if answer not in translations_list:
             form.add_error("answer", "Incorrect translation!")
             return self.form_invalid(form)
         
