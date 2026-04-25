@@ -76,7 +76,7 @@ class CreateRoom(FormView):
             return redirect("reverse_room")
         return redirect("room")
 
-
+# Два класса Repeat и Reverse можно дальше создать базовый и два наследника
 class RepeatRoom(FormView):
 
     form_class = RepeatRoomForm
@@ -135,13 +135,14 @@ class ReverseRepeatRoom(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        words_ids = self.request.session.get("words_ids")
+        words_ids = self.request.session.get("words_ids", [])
         words_list = list(pull_out_words(words_ids=words_ids))
         # Получаем слово
         word = words_list[-1]
         context["word"] = word.translation
+        context["part_of_speech"] = word.part_of_speech
         # Передаем word_id чтобы потом автоматически вставить в форму 
-        context["word_id"] = word.id
+        context["word_id"] = word.pk
         return context
 
     def form_valid(self, form):
@@ -155,8 +156,13 @@ class ReverseRepeatRoom(FormView):
         words_list = [t.strip().lower() for t in word.word.split(",")]
         answer = answer.strip().lower()
 
-        if answer not in words_list and answer != word.word:
+        if answer not in words_list:
             form.add_error("answer", "Incorrect translation!")
+
+            data = form.data.copy()
+            data["answer"] = ""
+            form.data = data
+
             return self.form_invalid(form)
         
         # если верно, удалим слово из сессии и перейдем снова на room
