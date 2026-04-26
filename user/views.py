@@ -13,11 +13,13 @@ class RegisterUserView(CreateView):
     
     form_class = RegisterUserForm
     template_name = "user/register.html"
-    success_url = reverse_lazy("word:write_word")
+    success_url = reverse_lazy("word:new_word")
 
 
     def form_valid(self, form):
         user = form.save()
+        self.object = user
         login(self.request, user)
-        return redirect(self.get_success_url())
+        success_url = str(self.get_success_url())
+        return redirect(success_url)
     
