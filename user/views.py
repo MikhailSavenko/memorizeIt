@@ -7,5 +7,5 @@ User = get_user_model()
 class RegisterUserView(CreateView):
     
     form_class = RegisterUserForm
-    template_name = "register_user.html"
+    template_name = "user/register.html"
 
