@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="write-form">
-        <form method="post" action="{% url 'new_word' %}">
+        <form method="post" action="{% url 'word:new_word' %}">
             {% csrf_token %}
             <h3 class="display-4">Add the words in your dictionary 📖</h1>
               {% if form.non_field_errors %}          

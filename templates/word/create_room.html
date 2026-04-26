@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="croom-form">
-        <form method="post" action={% url "create_room" %}>
+        <form method="post" action={% url "word:create_room" %}>
             <h3 class="display-4">You have {{ words_count }} words in your dictionary 💪</h2>
             <h3 class="display-6">You can choose a range or all words</h3>
             {% csrf_token %}

@@ -40,7 +40,7 @@ class WriteWord(CreateView):
 
     form_class = WriteWordForm
     template_name = "word/write_word.html"
-    success_url = reverse_lazy("new_word")
+    success_url = reverse_lazy("word:new_word")
 
 
 class CreateRoom(FormView):
@@ -73,8 +73,8 @@ class CreateRoom(FormView):
         set_word_ids_in_session(request=self.request, words_ids_list=words_ids_list_for_repeat)
 
         if reverse:
-            return redirect("reverse_room")
-        return redirect("room")
+            return redirect("word:reverse_room")
+        return redirect("word:room")
 
 # Два класса Repeat и Reverse можно дальше создать базовый и два наследника
 class RepeatRoom(FormView):
@@ -123,8 +123,8 @@ class RepeatRoom(FormView):
         self.request.session["words_ids"] = words_ids
         
         if not words_ids:
-            return redirect("create_room") 
-        return redirect("room")
+            return redirect("word:create_room") 
+        return redirect("word:room")
 
 
 class ReverseRepeatRoom(FormView):
@@ -173,8 +173,8 @@ class ReverseRepeatRoom(FormView):
         self.request.session["words_ids"] = words_ids
 
         if not words_ids:
-            return redirect("create_room") 
-        return redirect("reverse_room")
+            return redirect("word:create_room") 
+        return redirect("word:reverse_room")
     
 
 class Dictionary(ListView):

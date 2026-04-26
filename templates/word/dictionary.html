@@ -8,7 +8,7 @@
     <div class="dictionary-content">
       <h2 class="display-4">Your dictionary 📘</h2>
       <br>
-      <form action="{% url 'dictionary' %}" method="get">
+      <form action="{% url 'word:dictionary' %}" method="get">
         <input type="text" name="search_dict" placeholder="Search by ID or word/translation" class="form-control" />
       </form>
       <br>

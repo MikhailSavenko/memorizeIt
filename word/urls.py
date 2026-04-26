@@ -1,6 +1,8 @@
 from word.views import WriteWord, CreateRoom, RepeatRoom, index, search, ReverseRepeatRoom, Dictionary
 from django.urls import path
 
+app_name = "word"
+
 urlpatterns = [
     path("", index, name="home"),
     path("write/", WriteWord.as_view(), name="new_word"),
