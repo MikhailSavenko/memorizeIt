@@ -19,6 +19,13 @@
     height: 80vh;
 }
 
+.register-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
 .dictionary {
     margin-top: 50px;
     display: flex;

@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="register-form">
-        <form method="post" action={% url "user:register" %}>
+        <form method="post" action={% url "user:register_user" %}>
             <h3 class="display-4">Register your account 🔑</h2>
             <h3 class="display-6">After that you can write words and repeat them 📘</h3>
             {% csrf_token %}
