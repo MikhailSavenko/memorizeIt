@@ -4,6 +4,7 @@ from django.views.generic import CreateView
 from django.urls import reverse_lazy
 from django.contrib.auth import login
 from django.shortcuts import redirect
+from django.conf import settings
 
 from user.forms import RegisterUserForm, AuthenticationUserForm
 
@@ -20,7 +21,7 @@ class RegisterUserView(CreateView):
     def form_valid(self, form):
         user = form.save()
         self.object = user
-        login(self.request, user)
+        login(self.request, user, backend=settings.AUTHENTICATION_BACKENDS[0])
         success_url = str(self.get_success_url())
         return redirect(success_url)
     
