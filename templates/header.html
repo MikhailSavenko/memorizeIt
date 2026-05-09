@@ -28,7 +28,12 @@
             <li><a class="dropdown-item" href="{% url 'user:login' %}">Login</a></li>
             <li><a class="dropdown-item" href="#">Profile</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Sign out</a></li>
+            <li>
+              <form method="post" action="{% url 'user:logout'%}">
+                {% csrf_token %}
+                <button type="submit", class="dropdown-item">Sign Out</button>
+              </form>
+            </li>
           </ul>
         </div>
       </div>
