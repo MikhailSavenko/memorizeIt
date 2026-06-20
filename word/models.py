@@ -17,7 +17,7 @@ class Word(models.Model):
     word = models.CharField(max_length=255, verbose_name="English word", blank=False)
     part_of_speech = models.CharField(max_length=255, choices=PART_OF_SPEECH, verbose_name="Part of speech", default="another", blank=True)
     transcription = models.CharField(max_length=255, verbose_name="Transcription", blank=True, null=True)
-    translation = models.CharField(max_length=255, verbose_name="Translation", blank=False)
+    # translation = models.CharField(max_length=255, verbose_name="Translation", blank=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -34,7 +34,7 @@ class Word(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.word}--{self.translation}"
+        return self.word
     
 
 class Translation(models.Model):
