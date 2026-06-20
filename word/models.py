@@ -22,6 +22,7 @@ class Word(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    # В будущем будем подтягивать картинку отображающее слово, автоматически, будет как подсказка на повторении
     image_url = models.URLField(max_length=512, blank=True, null=True, verbose_name="Image URL")
 
     # Это полезно для реализации интервального повторения.
@@ -35,3 +36,10 @@ class Word(models.Model):
     def __str__(self):
         return f"{self.word}--{self.translation}"
     
+
+class Translation(models.Model):
+    word = models.ForeignKey(Word, on_delete=models.CASCADE)
+    text = models.CharField(max_length=255, blank=False, verbose_name="Translation variant")
+
+    def __str__(self) -> str:
+        return self.text
