@@ -25,3 +25,26 @@ def check_word_translation(user_answer: str, word_id: int) -> bool:
     translation_check = word.translation_set.filter(text__iexact=answer).exists() # type: ignore
 
     return translation_check 
+
+def remove_word_from_session(session: dict, word_id: int) -> list:
+    """
+    Удаляет идентификатор слова из списка текущей сессии тренировки.
+
+    Ищет переданный word_id в массиве идентификаторов слов, закрепленных
+    за текущим раундом повторения в сессии пользователя. Если ID найден,
+    удаляет его из списка, чтобы слово больше не выводилось в текущей комнате.
+
+    Args:
+        session (dict): Словарь текущей сессии Django (request.session).
+        word_id (int): Идентификатор угаданного слова в модели Word.
+
+    Returns:
+        list[int]: Обновленный список идентификаторов слов, оставшихся
+                   для повторения в текущей сессии.
+    """
+    words_ids = session.get("words_ids", [])
+        
+    if word_id in words_ids:
+        words_ids.remove(word_id)
+    
+    return words_ids

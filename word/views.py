@@ -5,7 +5,7 @@ from django.db.models import Q
 
 from word.forms import WriteWordForm, ParametersForm, RepeatRoomForm
 from word.models import Word
-from word.services import check_word_translation
+from word.services import check_word_translation, remove_word_from_session
 
 def pull_out_words(words_ids: list):
     """Получаем QuerySet объектов Word по списку их ID"""
@@ -115,12 +115,11 @@ class RepeatRoom(FormView):
             return self.form_invalid(form)
         
         # если верно, удалим слово из сессии и перейдем снова на room
-        words_ids = self.request.session.get("words_ids", [])
+        session = self.request.session
+        words_ids = remove_word_from_session(session=session, word_id=word_id)
         
-        if word_id in words_ids:
-            words_ids.remove(word_id)
         self.request.session["words_ids"] = words_ids
-        
+
         if not words_ids:
             return redirect("word:create_room") 
         
