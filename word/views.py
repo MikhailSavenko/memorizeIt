@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView, FormView, ListView
-from word.forms import WriteWordForm, ParametersForm, RepeatRoomForm
-from word.models import Word
 from django.urls import reverse_lazy
 from django.db.models import Q
 
+from word.forms import WriteWordForm, ParametersForm, RepeatRoomForm
+from word.models import Word
+from word.services import check_word_translation
 
 def pull_out_words(words_ids: list):
     """Получаем QuerySet объектов Word по списку их ID"""
@@ -100,12 +101,9 @@ class RepeatRoom(FormView):
         
         answer = cleaned_data.get("answer")
         word_id = cleaned_data.get("word_id")
-        word = get_object_or_404(Word, id=word_id)
-        
+
         # если неверное выведем error но не обновим страницу
-        answer = answer.strip().lower()
-        translation_check = word.translation_set.filter(text__iexact=answer).exists() # type: ignore
-        
+        translation_check = check_word_translation(user_answer=answer, word_id=word_id)
         
         if not translation_check:
             form.add_error("answer", "Incorrect translation!")
