@@ -37,9 +37,14 @@ class ParametersForm(forms.Form):
 
 class WriteWordForm(forms.ModelForm):
 
+    translations = forms.CharField(max_length=255, required=True, widget=forms.TextInput(attrs={
+                "class": "form-control",
+                "placeholder": "Write translation"
+            }))
+
     class Meta:
         model = Word
-        fields = ["word", "part_of_speech", "transcription", "translation"]
+        fields = ["word", "part_of_speech", "transcription"]
     
         widgets = {
             "part_of_speech": forms.Select(attrs={
@@ -52,11 +57,7 @@ class WriteWordForm(forms.ModelForm):
             "transcription": forms.TextInput(attrs={
                 "class": "form-control",
                 "placeholder": "Transcription is not required. You can keep this empty"
-            }),
-            "translation": forms.TextInput(attrs={
-                "class": "form-control",
-                "placeholder": "Write translation. If their is many use comma: word, word,.."
-            }),
+            })
         }
     
     def clean(self):
