@@ -103,10 +103,11 @@ class RepeatRoom(FormView):
         word = get_object_or_404(Word, id=word_id)
         
         # если неверное выведем error но не обновим страницу
-        translations_list = [t.strip().lower() for t in word.translation.split(",")]
         answer = answer.strip().lower()
+        translation_check = word.translation_set.filter(text__iexact=answer).exists() # type: ignore
         
-        if answer not in translations_list:
+        
+        if not translation_check:
             form.add_error("answer", "Incorrect translation!")
 
             data = form.data.copy()
@@ -124,6 +125,7 @@ class RepeatRoom(FormView):
         
         if not words_ids:
             return redirect("word:create_room") 
+        
         return redirect("word:room")
 
 
