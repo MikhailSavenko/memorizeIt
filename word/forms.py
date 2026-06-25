@@ -1,7 +1,7 @@
 from django import forms
 
 from word.models import Word
-from word.services import transcription_by_wordsapi
+from word.clients import transcription_by_wordsapi
 
 class RepeatRoomForm(forms.Form):
     answer = forms.CharField(required=True, widget=forms.TextInput(
