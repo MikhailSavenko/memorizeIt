@@ -28,7 +28,7 @@ def search(request):
         query = request.GET.get("search")
         if not isinstance(query, str):
             raise ValueError("Only string")
-        words = Word.objects.filter(Q(word__icontains=query)|Q(translation__icontains=query))
+        words = Word.objects.filter(Q(word__icontains=query)|Q(translation__text__icontains=query))
     return render(request, "word/search_alive.html", context={"words": words, "query": query})
     
 
