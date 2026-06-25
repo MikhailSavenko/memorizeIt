@@ -7,13 +7,6 @@ from word.forms import WriteWordForm, ParametersForm, RepeatRoomForm
 from word.models import Word
 from word.services import check_word_translation, remove_word_from_session
 
-def pull_out_words(words_ids: list):
-    """Получаем QuerySet объектов Word по списку их ID"""
-    if not words_ids:
-        return Word.objects.none()
-    words_list = Word.objects.filter(id__in=words_ids)
-    return words_list
-
 
 def set_word_ids_in_session(request, words_ids_list):
     """Кладет ids Word в сессию"""

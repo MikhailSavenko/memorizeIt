@@ -1,4 +1,6 @@
 from django.shortcuts import get_object_or_404
+from django.db.models import QuerySet
+
 from word.models import Word
 
 
@@ -26,6 +28,7 @@ def check_word_translation(user_answer: str, word_id: int) -> bool:
 
     return translation_check 
 
+
 def remove_word_from_session(session: dict, word_id: int) -> list:
     """
     Удаляет идентификатор слова из списка текущей сессии тренировки.
@@ -48,3 +51,25 @@ def remove_word_from_session(session: dict, word_id: int) -> list:
         words_ids.remove(word_id)
     
     return words_ids
+
+
+def pull_out_words(words_ids: list[int]) -> QuerySet[Word]:
+    """
+    Получает набор объектов слов по списку их идентификаторов.
+
+    Извлекает из базы данных записи слов, чьи уникальные идентификаторы 
+    присутствуют в переданном списке сессии. Запрос автоматически 
+    загружает связанные варианты переводов для каждого слова.
+
+    Args:
+        words_ids (list[int]): Список идентификаторов слов.
+
+    Returns:
+        QuerySet[Word]: Набор объектов Word со связанными переводами.
+                        Возвращает пустой набор, если список ID пуст.
+    """
+
+    if not words_ids:
+        return Word.objects.none()
+
+    return Word.objects.filter(id__in=words_ids).prefetch_related("translation_set")
