@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404
+from typing import Optional
 from django.db.models import QuerySet
 
 from word.models import Word, Translation
@@ -71,3 +71,32 @@ def pull_out_words(words_ids: list[int]) -> QuerySet[Word]:
         return Word.objects.none()
 
     return Word.objects.filter(id__in=words_ids).prefetch_related("translation_set")
+
+
+def get_next_practice_word(words_ids: list[int]) -> Optional[Word]:
+    """
+    Извлекает объект следующего слова для текущей сессии тренировки.
+
+    Берет идентификатор последнего элемента из списка слов сессии и выполняет
+    точечный запрос к базе данных. Если слово успешно найдено, возвращает его
+    экземпляр для отображения в интерфейсе тренировочной комнаты.
+
+    Args:
+        words_ids (list[int]): Список идентификаторов слов, оставшихся
+                               для повторения в текущей сессии.
+
+    Returns:
+        Optional[Word]: Объект Word, если он успешно найден в базе данных.
+                        Возвращает None, если список ID пуст или запись 
+                        была удалена из базы.
+    """
+    
+    if not words_ids:
+        return None
+    
+    next_word_id = words_ids[-1]
+
+    try:
+        return Word.objects.get(id=next_word_id)
+    except Word.DoesNotExist:
+        return None
