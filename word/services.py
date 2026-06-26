@@ -97,6 +97,7 @@ def get_next_practice_word(words_ids: list[int]) -> Optional[Word]:
     next_word_id = words_ids[-1]
 
     try:
+        # можно модорнезировать и тянуть только нужные поля в будущем
         return Word.objects.get(id=next_word_id)
     except Word.DoesNotExist:
         return None

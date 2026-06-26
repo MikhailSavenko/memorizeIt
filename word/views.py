@@ -1,3 +1,4 @@
+from typing import Optional
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView, FormView, ListView
 from django.urls import reverse_lazy
@@ -5,7 +6,7 @@ from django.db.models import Q
 
 from word.forms import WriteWordForm, ParametersForm, RepeatRoomForm
 from word.models import Word
-from word.services import check_word_translation, remove_word_from_session
+from word.services import check_word_translation, remove_word_from_session, get_next_practice_word
 
 
 def set_word_ids_in_session(request, words_ids_list):
@@ -80,13 +81,16 @@ class RepeatRoom(FormView):
         context = super().get_context_data(**kwargs)
         
         words_ids = self.request.session.get("words_ids", [])
-        words_list = list(pull_out_words(words_ids=words_ids))
         # Получаем слово
-        word = words_list[-1]
-        context["word"] = word.word
-        context["part_of_speech"] = word.part_of_speech
-        # Передаем word_id чтобы потом автоматически вставить в форму 
-        context["word_id"] = word.pk
+        word: Optional[Word] = get_next_practice_word(words_ids=words_ids)
+
+        if word:
+            context["word"] = word.word
+            context["part_of_speech"] = word.part_of_speech
+            context["word_id"] = word.pk # Передаем word_id чтобы потом автоматически вставить в форму 
+        else:
+            context["no_word_left"] = True
+            
         return context
 
     def form_valid(self, form):
