@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.db.models import QuerySet
 
-from word.models import Word
+from word.models import Word, Translation
 
 
 def check_word_translation(user_answer: str, word_id: int) -> bool:
@@ -16,15 +16,13 @@ def check_word_translation(user_answer: str, word_id: int) -> bool:
         user_answer (str): Строка с ответом (переводом), введенная пользователем.
         word_id (int): Идентификатор проверяемого слова в модели Word.
         
-
     Returns:
         bool: True, если ответ совпал хотя бы с одним корректным переводом,
               иначе False.
     """
 
     answer = user_answer.strip().lower()
-    word = get_object_or_404(Word, id=word_id)
-    translation_check = word.translation_set.filter(text__iexact=answer).exists() # type: ignore
+    translation_check = Translation.objects.filter(word_id=word_id, text__iexact=answer).exists() 
 
     return translation_check 
 
