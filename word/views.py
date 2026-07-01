@@ -137,7 +137,7 @@ class ReverseRepeatRoom(FormView):
         word: Optional[Word] = get_next_practice_word_with_translations(words_ids=words_ids)
 
         if word:
-            context["word"] = ... # type:ignore
+            context["word"] = word.translations_string 
             context["part_of_speech"] = word.part_of_speech
             # Передаем word_id чтобы потом автоматически вставить в форму 
             context["word_id"] = word.pk
