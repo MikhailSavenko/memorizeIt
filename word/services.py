@@ -48,6 +48,7 @@ def check_word_answer(user_answer: str, word_id: int) -> bool:
     
     return word_check
 
+
 def remove_word_from_session(session: dict, word_id: int) -> list:
     """
     Удаляет идентификатор слова из списка текущей сессии тренировки.
