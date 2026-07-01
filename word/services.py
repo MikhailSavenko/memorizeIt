@@ -20,12 +20,32 @@ def check_word_translation(user_answer: str, word_id: int) -> bool:
         bool: True, если ответ совпал хотя бы с одним корректным переводом,
               иначе False.
     """
-
+    # Доработать приемку от пользователя нескольких переводов иностранного слова
     answer = user_answer.strip().lower()
     translation_check = Translation.objects.filter(word_id=word_id, text__iexact=answer).exists() 
 
     return translation_check 
 
+
+def check_word_answer(user_answer: str, word_id: int) -> bool:
+    """
+    Проверяет ответ пользователя на совпадение с оригинальным изучаемым словом.
+
+    Ищет в базе данных запись с указанным идентификатором и проверяет,
+    совпадает ли введенный пользователем текст с полем оригинального 
+    иностранного слова. Сравнение производится без учета регистра.
+
+    Args:
+        user_answer (str): Строка с ответом (изучаемым словом), введенная пользователем.
+        word_id (int): Идентификатор проверяемого слова в модели Word.
+
+    Returns:
+        bool: True, если ответ совпал с оригинальным словом, иначе False.
+    """
+
+    answer = user_answer.strip()
+    word_check = Word.objects.filter(id=word_id, word__iexact=answer).exists()
+    return word_check
 
 def remove_word_from_session(session: dict, word_id: int) -> list:
     """
