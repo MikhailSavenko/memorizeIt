@@ -45,6 +45,7 @@ def check_word_answer(user_answer: str, word_id: int) -> bool:
 
     answer = user_answer.strip()
     word_check = Word.objects.filter(id=word_id, word__iexact=answer).exists()
+    
     return word_check
 
 def remove_word_from_session(session: dict, word_id: int) -> list:

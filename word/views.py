@@ -6,7 +6,7 @@ from django.db.models import Q
 
 from word.forms import WriteWordForm, ParametersForm, RepeatRoomForm
 from word.models import Word
-from word.services import check_word_translation, get_next_practice_word_with_translations, remove_word_from_session, get_next_practice_word
+from word.services import check_word_answer, check_word_translation, get_next_practice_word_with_translations, remove_word_from_session, get_next_practice_word
 
 
 def set_word_ids_in_session(request, words_ids_list):
@@ -151,13 +151,11 @@ class ReverseRepeatRoom(FormView):
         
         answer = cleaned_data.get("answer")
         word_id = cleaned_data.get("word_id")
-        word = get_object_or_404(Word, id=word_id)
 
         # если неверное выведем error но не обновим страницу
-        words_list = [t.strip().lower() for t in word.word.split(",")]
-        answer = answer.strip().lower()
+        check_word = check_word_answer(user_answer=answer, word_id=word_id)
 
-        if answer not in words_list:
+        if not check_word:
             form.add_error("answer", "Incorrect translation!")
 
             data = form.data.copy()
@@ -167,14 +165,14 @@ class ReverseRepeatRoom(FormView):
             return self.form_invalid(form)
         
         # если верно, удалим слово из сессии и перейдем снова на room
-        words_ids = self.request.session.get("words_ids", [])
+        session = self.request.session
+        words_ids = remove_word_from_session(session=session, word_id=word_id)
         
-        if word_id in words_ids:
-            words_ids.remove(word_id)
         self.request.session["words_ids"] = words_ids
 
         if not words_ids:
             return redirect("word:create_room") 
+        
         return redirect("word:reverse_room")
     
 
