@@ -101,3 +101,26 @@ def get_next_practice_word(words_ids: list[int]) -> Optional[Word]:
         return Word.objects.get(id=next_word_id)
     except Word.DoesNotExist:
         return None
+    
+
+def get_next_practice_word_with_translations(words_ids: list[int]) -> Optional[Word]:
+    """
+    Извлекает объект следующего слова вместе с его вариантами перевода.
+
+    Args:
+        words_ids (list[int]): Список уникальных идентификаторов слов, 
+                               оставшихся в текущей сессии повторения.
+
+    Returns:
+        Optional[Word]: Объект Word со связанными переводами в случае успеха.
+                        Возвращает None, если список пуст или слово удалено.
+    """
+    if not words_ids:
+        return None
+    
+    next_word_id = words_ids[-1]
+
+    try:
+        return Word.objects.prefetch_related("translation_set").get(id=next_word_id)
+    except Word.DoesNotExist:
+        return None
