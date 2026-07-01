@@ -36,6 +36,24 @@ class Word(models.Model):
     def __str__(self):
         return self.word
     
+    @property
+    def translations_string(self) -> str:
+        """
+        Возвращает все варианты перевода слова одной строкой через запятую.
+
+        Использует кэшированные данные в оперативной памяти, если для объекта 
+        ранее была выполнена оптимизация запроса с prefetch_related. В противном 
+        случае производит ленивое обращение к базе данных.
+
+        Returns:
+            str: Строка с перечислениями вариантов перевода, разделенными запятой 
+                 и пробелом. Если переводы отсутствуют, возвращает пустую строку.
+        """
+        translations_all = [t.text for t in self.translation_set.all()] # type:ignore
+        return ", ".join(translations_all)
+
+
+        
 
 class Translation(models.Model):
     word = models.ForeignKey(Word, on_delete=models.CASCADE)
