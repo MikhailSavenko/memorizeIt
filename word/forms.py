@@ -1,6 +1,6 @@
 from django import forms
 
-from word.models import Word
+from word.models import Word, Translation
 from word.clients import transcription_by_wordsapi
 
 class RepeatRoomForm(forms.Form):
@@ -35,12 +35,23 @@ class ParametersForm(forms.Form):
         return cleaned_data
     
 
-class WriteWordForm(forms.ModelForm):
 
-    translations = forms.CharField(max_length=255, required=True, widget=forms.TextInput(attrs={
+TranslationInlineFormSet = forms.inlineformset_factory(
+    parent_model=Word,
+    model=Translation,
+    fields=("text"),
+    extra=1,
+    can_delete=False,
+    widgets={
+        "translation": forms.Select(attrs={
                 "class": "form-control",
                 "placeholder": "Write translation"
-            }))
+            })
+    }
+)
+    
+
+class WriteWordForm(forms.ModelForm):
 
     class Meta:
         model = Word
@@ -52,7 +63,7 @@ class WriteWordForm(forms.ModelForm):
             }),
             "word": forms.TextInput(attrs={
                 "class": "form-control",
-                "placeholder": "Write English word"
+                "placeholder": "Write word"
             }),
             "transcription": forms.TextInput(attrs={
                 "class": "form-control",
