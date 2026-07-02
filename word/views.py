@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import CreateView, FormView, ListView
 from django.urls import reverse_lazy
 from django.db.models import Q
+from django.db import transaction
 
 from word.forms import WriteWordForm, ParametersForm, RepeatRoomForm, TranslationInlineFormSet
 from word.models import Word
@@ -47,6 +48,20 @@ class WriteWord(CreateView):
         )
 
         return context
+    
+    def form_valid(self, form):
+        formset = TranslationInlineFormSet(self.request.POST)
+
+        if not formset.is_valid():
+            return self.form_invalid(form)
+        
+        with transaction.atomic():
+            self.object = form.save()
+            formset.instance = self.object
+            formset.save()
+        
+        return redirect(self.get_success_url())
+    
 
 class CreateRoom(FormView):
     
