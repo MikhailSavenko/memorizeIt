@@ -1,12 +1,12 @@
-from typing import Optional
-from django.core.paginator import Paginator
-from django.db.models.query import _BaseQuerySet, QuerySet
+from typing import Any, Optional
+
+from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView, FormView, ListView
 from django.urls import reverse_lazy
 from django.db.models import Q
 
-from word.forms import WriteWordForm, ParametersForm, RepeatRoomForm
+from word.forms import WriteWordForm, ParametersForm, RepeatRoomForm, TranslationInlineFormSet
 from word.models import Word
 from word.services import check_word_answer, check_word_translation, get_next_practice_word_with_translations, remove_word_from_session, get_next_practice_word
 
@@ -39,6 +39,14 @@ class WriteWord(CreateView):
     template_name = "word/write_word.html"
     success_url = reverse_lazy("word:new_word")
 
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+
+        context["translation_formset"] = TranslationInlineFormSet(
+            self.request.POST or None
+        )
+
+        return context
 
 class CreateRoom(FormView):
     
