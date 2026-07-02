@@ -1,5 +1,6 @@
 from typing import Optional
-from django.db.models.query import QuerySet
+from django.core.paginator import Paginator
+from django.db.models.query import _BaseQuerySet, QuerySet
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView, FormView, ListView
 from django.urls import reverse_lazy
@@ -182,7 +183,8 @@ class Dictionary(ListView):
     model = Word
     template_name = "word/dictionary.html"
     context_object_name = "words"
+    
+    paginate_by = 29
 
     def get_queryset(self) -> QuerySet[Word]:
         return Word.objects.prefetch_related("translation_set").all()
-
