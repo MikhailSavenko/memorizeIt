@@ -182,16 +182,3 @@ class Dictionary(ListView):
     template_name = "word/dictionary.html"
     context_object_name = "words"
 
-    def get_context_data(self, **kwargs):
-        """Получает контекст достает из поля введенный параметр поиска, ищет слово и добаляет его pk в контекст для JS"""
-        context = super().get_context_data(**kwargs)
-        query = self.request.GET.get("search_dict")
-        if query:
-            word = Word.objects.filter(
-                Q(id__icontains=query) |
-                Q(word__icontains=query) |
-                Q(translation__icontains=query)
-            ).first()
-            if word:
-                context["highlight_id"] = word.pk
-        return context
