@@ -9,7 +9,7 @@ class RepeatRoomForm(forms.Form):
     word_id = forms.IntegerField(widget=forms.HiddenInput())
 
 
-class ParametersForm(forms.Form):
+class ParametersCreateRoomForm(forms.Form):
     from_num = forms.IntegerField(required=False, widget=forms.NumberInput(
         attrs={"class": "form-control", "placeholder": "Enter from which word number to start"}
     ))

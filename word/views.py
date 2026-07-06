@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.db.models import Q
 from django.db import transaction
 
-from word.forms import WriteWordForm, ParametersForm, RepeatRoomForm, TranslationInlineFormSet
+from word.forms import WriteWordForm, ParametersCreateRoomForm, RepeatRoomForm, TranslationInlineFormSet
 from word.models import Word
 from word.services import check_word_answer, get_available_words_count, check_word_translation, get_next_practice_word_with_translations, remove_word_from_session, get_next_practice_word
 
@@ -65,7 +65,7 @@ class WriteWord(CreateView):
 
 class CreateRoom(FormView):
     
-    form_class = ParametersForm
+    form_class = ParametersCreateRoomForm
     template_name = "word/create_room.html"
     
     def get_context_data(self, **kwargs) -> dict:
