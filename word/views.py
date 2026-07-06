@@ -77,8 +77,8 @@ class CreateRoom(FormView):
     def form_valid(self, form):
         """Создаем набор слов для повторения исходя из заданных в форме параметров"""
         cleaned_data = form.cleaned_data
-        from_num = cleaned_data.get("from_num")
-        to_num = cleaned_data.get("to_num")
+        num_first = cleaned_data.get("num_first")
+        num_second = cleaned_data.get("num_second")
         all_words = cleaned_data.get("all_words")
         reverse = cleaned_data.get("reverse")
 
@@ -86,8 +86,8 @@ class CreateRoom(FormView):
 
         if all_words:
             words_ids_list_for_repeat = list(Word.objects.all().values_list("id", flat=True))
-        elif from_num and to_num:
-            words_ids_list_for_repeat = list(Word.objects.filter(id__gte=from_num, id__lte=to_num).values_list("id", flat=True))
+        elif num_first and num_second:
+            words_ids_list_for_repeat = list(Word.objects.filter(id__gte=num_first, id__lte=num_second).values_list("id", flat=True))
 
         set_word_ids_in_session(request=self.request, words_ids_list=words_ids_list_for_repeat)
 

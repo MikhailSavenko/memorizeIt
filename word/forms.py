@@ -10,10 +10,10 @@ class RepeatRoomForm(forms.Form):
 
 
 class ParametersCreateRoomForm(forms.Form):
-    from_num = forms.IntegerField(required=False, widget=forms.NumberInput(
+    num_first = forms.IntegerField(required=False, widget=forms.NumberInput(
         attrs={"class": "form-control", "placeholder": "Enter from which word number to start"}
     ))
-    to_num = forms.IntegerField(required=False, widget=forms.NumberInput(
+    num_second = forms.IntegerField(required=False, widget=forms.NumberInput(
         attrs={"class": "form-control", "placeholder": "Enter the last word number in range"}
     ))
     all_words = forms.BooleanField(required=False, label="All words")
@@ -23,14 +23,14 @@ class ParametersCreateRoomForm(forms.Form):
     def clean(self):
         cleaned_data = super().clean()
         
-        from_num = cleaned_data.get("from_num")
-        to_num = cleaned_data.get("to_num")
+        num_first = cleaned_data.get("num_first")
+        num_second = cleaned_data.get("num_second")
         all_words = cleaned_data.get("all_words")
         
-        if from_num is not None and to_num is not None and all_words is True:
+        if num_first is not None and num_second is not None and all_words is True:
             raise forms.ValidationError("All params not allow")
         # Можно добавить дополнительные проверки?
-        if from_num is None and to_num is None and not all_words:
+        if num_first is None and num_second is None and not all_words:
             raise forms.ValidationError("Empty all params!")
         return cleaned_data
     
