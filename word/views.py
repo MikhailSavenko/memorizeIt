@@ -9,7 +9,7 @@ from django.db import transaction
 
 from word.forms import WriteWordForm, ParametersForm, RepeatRoomForm, TranslationInlineFormSet
 from word.models import Word
-from word.services import check_word_answer, check_word_translation, get_next_practice_word_with_translations, remove_word_from_session, get_next_practice_word
+from word.services import check_word_answer, get_available_words_count, check_word_translation, get_next_practice_word_with_translations, remove_word_from_session, get_next_practice_word
 
 
 def set_word_ids_in_session(request, words_ids_list):
@@ -71,8 +71,7 @@ class CreateRoom(FormView):
     def get_context_data(self, **kwargs) -> dict:
         """Получает контекст и добавляет поле с количеством слов"""
         context = super().get_context_data(**kwargs)
-        words_count = Word.objects.count()                   # можно в дальнейшем вынести в контекстный процессор или Simple Tag
-        context["words_count"] = words_count
+        context["words_count"] = get_available_words_count()
         return context
 
     def form_valid(self, form):

@@ -146,3 +146,13 @@ def get_next_practice_word_with_translations(words_ids: list[int]) -> Optional[W
         return Word.objects.prefetch_related("translation_set").get(id=next_word_id)
     except Word.DoesNotExist:
         return None
+    
+
+def get_available_words_count() -> int:
+    """
+    Возвращает общее количество слов, доступных для тренировки.
+    
+    В будущем сюда добавится фильтрация по конкретному пользователю:
+    Word.objects.filter(user=user).count()
+    """
+    return Word.objects.count()
