@@ -81,12 +81,13 @@ class CreateRoom(FormView):
         second_num = cleaned_data.get("second_num")
         all_words = cleaned_data.get("all_words")
         reverse = cleaned_data.get("reverse")
-
+        
         words_ids_list_for_repeat = []
 
         if all_words:
-            words_ids_list_for_repeat = list(Word.objects.all().values_list("id", flat=True))
-        elif first_num and second_num:
+            words_ids_list_for_repeat = list(Word.objects.values_list("id", flat=True))
+
+        if first_num and second_num:
             words_ids_list_for_repeat = list(Word.objects.filter(id__gte=first_num, id__lte=second_num).values_list("id", flat=True))
 
         set_word_ids_in_session(request=self.request, words_ids_list=words_ids_list_for_repeat)
@@ -95,7 +96,7 @@ class CreateRoom(FormView):
             return redirect("word:reverse_room")
         return redirect("word:room")
 
-# Два класса Repeat и Reverse можно дальше создать базовый и два наследника
+
 class RepeatRoom(FormView):
 
     form_class = RepeatRoomForm

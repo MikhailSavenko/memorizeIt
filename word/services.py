@@ -156,3 +156,14 @@ def get_available_words_count() -> int:
     Word.objects.filter(user=user).count()
     """
     return Word.objects.count()
+
+
+def get_all_word_ids() -> list[int]:
+    """
+    Возвращает ids всех слов для тренировки.
+    
+    В будущем сюда добавится фильтрация по конкретному пользователю:
+    Word.objects.filter(user=user)...
+    """
+
+    return list(Word.objects.values_list("id", flat=True))
