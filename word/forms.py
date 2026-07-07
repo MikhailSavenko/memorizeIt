@@ -37,7 +37,6 @@ class ParametersCreateRoomForm(forms.Form):
         return cleaned_data
     
 
-
 TranslationInlineFormSet = forms.inlineformset_factory(
     parent_model=Word,
     model=Translation,
@@ -86,3 +85,7 @@ class WriteWordForm(forms.ModelForm):
         #         data["transcription"] = get_transcription
                 
         return data
+
+
+class SearchAliveForm(forms.Form):
+    text = forms.CharField(max_length=50, required=True)
