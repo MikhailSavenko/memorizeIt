@@ -204,7 +204,7 @@ def get_searched_word(text: str) -> QuerySet[Word]:
         QuerySet[Word]: Набор отфильтрованных объектов Word со связанными переводами.
     """
     
-    queryset = Word.objects.filter(Q(word__icontains=text)| Q(translation_set__text__icontains=text)).distinct()
+    queryset = Word.objects.filter(Q(word__icontains=text)| Q(translation__text__icontains=text)).distinct()
 
     return queryset.prefetch_related("translation_set")
 
