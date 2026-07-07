@@ -12,13 +12,6 @@ from word.models import Word
 from word.services import check_word_answer, get_all_word_ids, get_available_words_count, check_word_translation, get_next_practice_word_with_translations, get_range_word_ids, remove_word_from_session, get_next_practice_word
 
 
-def set_word_ids_in_session(request, words_ids_list):
-    """Кладет ids Word в сессию"""
-    if not words_ids_list:
-        raise ValueError("No words.")
-    request.session["words_ids"] = words_ids_list
-
-
 def search(request):
     words = []
     query = ""
@@ -87,7 +80,7 @@ class CreateRoom(FormView):
         if first_num is not None and second_num is not None:
             all_word_ids = get_range_word_ids(all_word_ids=all_word_ids, first_num=first_num, second_num=second_num)
 
-        set_word_ids_in_session(request=self.request, words_ids_list=all_word_ids)
+        self.request.session["words_ids"] = all_word_ids
 
         if reverse:
             return redirect("word:reverse_room")
