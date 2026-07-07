@@ -40,7 +40,7 @@ class ParametersCreateRoomForm(forms.Form):
 TranslationInlineFormSet = forms.inlineformset_factory(
     parent_model=Word,
     model=Translation,
-    fields=("text"),
+    fields=("text",),
     extra=1,
     can_delete=False,
     widgets={
