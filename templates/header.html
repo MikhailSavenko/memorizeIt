@@ -13,7 +13,7 @@
         </ul>
 
         <div class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 position-relative" role="search">
-          <input type="search" name="text" class="form-control" placeholder="Search..." aria-label="Search" hx-get="{% url 'word:search' %}" hx-trigger="keyup[this.value.length > 0] delay:1500ms" hx-target="#search-results-popup">
+          <input type="search" name="text" class="form-control" placeholder="Search..." aria-label="Search" hx-get="{% url 'word:search' %}" hx-trigger="keyup[this.value.length > 0] delay:1500ms, search" hx-target="#search-results-popup" hx-on:input="if(this.value.length === 0) document.getElementById('search-results-popup').innerHTML = ''">
           <!-- Контейнер-окошко, куда HTMX будет вставлять наш список слов -->
           <div id="search-results-popup" class="position-absolute start-0 w-100 mt-1" style="z-index: 1050;"></div>
         </div>
