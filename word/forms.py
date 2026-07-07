@@ -27,11 +27,13 @@ class ParametersCreateRoomForm(forms.Form):
         second_num = cleaned_data.get("second_num")
         all_words = cleaned_data.get("all_words")
         
-        if first_num is not None and second_num is not None and all_words is True:
-            raise forms.ValidationError("All params not allow")
-        # Можно добавить дополнительные проверки?
-        if first_num is None and second_num is None and not all_words:
-            raise forms.ValidationError("Empty all params!")
+        if all_words and any((second_num, first_num)):
+            raise forms.ValidationError("Cannot combine 'All words' with a specific range. Please choose one.")
+            
+        if not all_words:
+            if first_num is None or second_num is None:
+                raise forms.ValidationError("You must specify both fields for the range or enter 'All words'.")
+            
         return cleaned_data
     
 
