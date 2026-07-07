@@ -9,7 +9,7 @@ from django.db import transaction
 
 from word.forms import WriteWordForm, ParametersCreateRoomForm, RepeatRoomForm, TranslationInlineFormSet
 from word.models import Word
-from word.services import check_word_answer, get_available_words_count, check_word_translation, get_next_practice_word_with_translations, remove_word_from_session, get_next_practice_word
+from word.services import check_word_answer, get_all_word_ids, get_available_words_count, check_word_translation, get_next_practice_word_with_translations, remove_word_from_session, get_next_practice_word
 
 
 def set_word_ids_in_session(request, words_ids_list):
@@ -82,13 +82,14 @@ class CreateRoom(FormView):
         all_words = cleaned_data.get("all_words")
         reverse = cleaned_data.get("reverse")
         
-        words_ids_list_for_repeat = []
+
+        all_word_ids = get_all_word_ids()
 
         if all_words:
-            words_ids_list_for_repeat = list(Word.objects.values_list("id", flat=True))
+            words_ids_list_for_repeat = all_word_ids
 
-        if first_num and second_num:
-            words_ids_list_for_repeat = list(Word.objects.filter(id__gte=first_num, id__lte=second_num).values_list("id", flat=True))
+        elif first_num and second_num:
+            words_ids_list_for_repeat = ...
 
         set_word_ids_in_session(request=self.request, words_ids_list=words_ids_list_for_repeat)
 

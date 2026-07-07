@@ -167,3 +167,25 @@ def get_all_word_ids() -> list[int]:
     """
 
     return list(Word.objects.values_list("id", flat=True))
+
+
+def get_range_word_ids(all_word_ids: list[int], first_num: int, second_num: int) -> list[int]:
+    """
+    Возвращает срез списка ID слов на основе диапазона пользовательских номеров.
+
+    Автоматически определяет минимальную и максимальную границы диапазона
+    и приводит их к индексам Python (с 0).
+
+    Args:
+        all_word_ids (list[int]): Полный исходный список идентификаторов.
+        first_num (int): Первый номер диапазона.
+        second_num (int): Второй номер диапазона.
+
+    Returns:
+        list[int]: Вырезанный список идентификаторов для сессии повторения.
+    """
+    from_num = min(first_num, second_num) - 1
+    to_num = max(first_num, second_num)
+
+    return all_word_ids[from_num: to_num]
+
