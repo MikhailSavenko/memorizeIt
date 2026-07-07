@@ -9,7 +9,7 @@ from django.db import transaction
 
 from word.forms import WriteWordForm, ParametersCreateRoomForm, RepeatRoomForm, TranslationInlineFormSet
 from word.models import Word
-from word.services import check_word_answer, get_all_word_ids, get_available_words_count, check_word_translation, get_next_practice_word_with_translations, remove_word_from_session, get_next_practice_word
+from word.services import check_word_answer, get_all_word_ids, get_available_words_count, check_word_translation, get_next_practice_word_with_translations, get_range_word_ids, remove_word_from_session, get_next_practice_word
 
 
 def set_word_ids_in_session(request, words_ids_list):
@@ -79,19 +79,15 @@ class CreateRoom(FormView):
         cleaned_data = form.cleaned_data
         first_num = cleaned_data.get("first_num")
         second_num = cleaned_data.get("second_num")
-        all_words = cleaned_data.get("all_words")
         reverse = cleaned_data.get("reverse")
         
 
         all_word_ids = get_all_word_ids()
 
-        if all_words:
-            words_ids_list_for_repeat = all_word_ids
+        if first_num is not None and second_num is not None:
+            all_word_ids = get_range_word_ids(all_word_ids=all_word_ids, first_num=first_num, second_num=second_num)
 
-        elif first_num and second_num:
-            words_ids_list_for_repeat = ...
-
-        set_word_ids_in_session(request=self.request, words_ids_list=words_ids_list_for_repeat)
+        set_word_ids_in_session(request=self.request, words_ids_list=all_word_ids)
 
         if reverse:
             return redirect("word:reverse_room")
