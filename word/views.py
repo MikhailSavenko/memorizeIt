@@ -8,16 +8,25 @@ from django.db import transaction
 
 from word.forms import WriteWordForm, ParametersCreateRoomForm, RepeatRoomForm, TranslationInlineFormSet, SearchAliveForm
 from word.models import Word
-from word.services import check_word_answer, get_all_word_ids, get_available_words_count, check_word_translation, get_next_practice_word_with_translations, get_range_word_ids, remove_word_from_session, get_next_practice_word
+from word.services import check_word_answer, get_all_word_ids, get_available_words_count, check_word_translation, get_next_practice_word_with_translations, get_range_word_ids, get_searched_word, remove_word_from_session, get_next_practice_word
 
 
 def search(request):
+    form = SearchAliveForm(request.GET or None)
+    search_text = ""
     words = []
 
-    context = dict()
-    context["query"] = SearchAliveForm(request.GET.get("search") or None)
+    if form.is_valid():
+
+        search_text = form.cleaned_data["text"]
+        words = get_searched_word(text=search_text)
     
-    return render(request, "word/search_alive.html", context={"words": words, "query": query})
+    context = {
+        "query": search_text,
+        "words": words
+    }
+
+    return render(request, "word/search_alive.html", context=context)
     
 
 def index(request):
