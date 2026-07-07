@@ -26,7 +26,7 @@ def search(request):
         "words": words
     }
 
-    return render(request, "word/search_alive.html", context=context)
+    return render(request, "partials/search_alive.html", context=context)
     
 
 def index(request):
