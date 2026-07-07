@@ -4,22 +4,19 @@ from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView, FormView, ListView
 from django.urls import reverse_lazy
-from django.db.models import Q
 from django.db import transaction
 
-from word.forms import WriteWordForm, ParametersCreateRoomForm, RepeatRoomForm, TranslationInlineFormSet
+from word.forms import WriteWordForm, ParametersCreateRoomForm, RepeatRoomForm, TranslationInlineFormSet, SearchAliveForm
 from word.models import Word
 from word.services import check_word_answer, get_all_word_ids, get_available_words_count, check_word_translation, get_next_practice_word_with_translations, get_range_word_ids, remove_word_from_session, get_next_practice_word
 
 
 def search(request):
     words = []
-    query = ""
-    if request.method == "GET":
-        query = request.GET.get("search")
-        if not isinstance(query, str):
-            raise ValueError("Only string")
-        words = Word.objects.filter(Q(word__icontains=query)|Q(translation__text__icontains=query))
+
+    context = dict()
+    context["query"] = SearchAliveForm(request.GET.get("search") or None)
+    
     return render(request, "word/search_alive.html", context={"words": words, "query": query})
     
 

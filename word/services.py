@@ -1,5 +1,5 @@
 from typing import Optional
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Q
 
 from word.models import Word, Translation
 
@@ -188,4 +188,23 @@ def get_range_word_ids(all_word_ids: list[int], first_num: int, second_num: int)
     to_num = max(first_num, second_num)
 
     return all_word_ids[from_num: to_num]
+
+
+def get_searched_word(text: str) -> QuerySet[Word]:
+    """
+    Возвращает оптимизированный набор слов по частичному совпадению с текстом или переводом.
+
+    Ищет совпадения без учета регистра, исключает дубликаты записей Word 
+    и подтягивает связанные переводы одной операцией для защиты от N+1.
+
+    Args:
+        text (str): Поисковый запрос пользователя.
+
+    Returns:
+        QuerySet[Word]: Набор отфильтрованных объектов Word со связанными переводами.
+    """
+    
+    queryset = Word.objects.filter(Q(word__icontains=text)| Q(translation_set__text__icontains=text)).distinct()
+
+    return queryset.prefetch_related("translation_set")
 
