@@ -100,7 +100,8 @@ class RepeatRoom(FormView):
     template_name = "word/room.html"
 
     def render_to_response(self, context: dict[str, Any], **response_kwargs: Any) -> HttpResponse:
-        
+        # Работаем с HTMX в форме будет триггер, если будет отправлен POST с формы то HX-Request заголовок будет
+        # И мы отдадим не целую страницу, а лишь часть с новым словом
         if self.request.headers.get("HX-Request"):
             self.template_name = "partials/word_card_partial.html"
 
@@ -119,6 +120,7 @@ class RepeatRoom(FormView):
             # Передаем word_id чтобы потом автоматически вставить в форму 
             context["word_id"] = word.pk 
         else:
+            # В нашем partials/word_card_partial.html будем проверять этот тег, чтобы выкинуть поздравление о завершении
             context["no_word_left"] = True
             
         return context
@@ -141,12 +143,13 @@ class RepeatRoom(FormView):
 
             return self.form_invalid(form)
         
-        # если верно, удалим слово из сессии и перейдем снова на room
+        # если верно, удалим слово из сессии и вызовем get для вызова get_context_data(достать новое слово) и render_ro_response(перезагрузить часть страницы)
         session = self.request.session
         words_ids = remove_word_from_session(session=session, word_id=word_id)
         
         self.request.session["words_ids"] = words_ids
 
+        # Вызываем get чтобы вызвать render_ro_response
         return self.get(self.request)
 
 
