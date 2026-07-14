@@ -1,0 +1,21 @@
+{% if no_word_left %}
+  <h1 class="display-3"><b>Congratulations!</b></h1>
+  <h2 class="display-4">You successfully finished repeating the words in this room 🤯</h2>
+  <br>
+  <a href="{% url 'word:create_room' %}" class="btn btn-primary btn-lg">Create New Room</a>
+{% else %}
+  <form hx-post="{% url 'word:room' %}" hx-target="#word-card-container" hx-swap="innerHTML">
+    <h1 class="display-3"><b>{{ word }} - {{ part_of_speech }} - ?</b></h1>
+    <h3 class="display-4">Translate the word above. You know it 🤓</h3>
+      
+      {% csrf_token %}
+      <input type="hidden" name="word_id" value="{{ word_id }}">
+      <p>{{ form.answer }}</p>
+      
+      {% for error in form.answer.errors %}
+        <div class="alert alert-danger">{{ error }}</div>
+      {% endfor %}
+  
+      <button class="btn btn-success" type="submit">Check Answer</button>
+  </form>
+{% endif %}
