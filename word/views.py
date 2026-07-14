@@ -106,7 +106,6 @@ class RepeatRoom(FormView):
 
         return super().render_to_response(context, **response_kwargs)
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
@@ -148,10 +147,7 @@ class RepeatRoom(FormView):
         
         self.request.session["words_ids"] = words_ids
 
-        if not words_ids:
-            return redirect("word:create_room") 
-        
-        return redirect("word:room")
+        return self.get(self.request)
 
 
 class ReverseRepeatRoom(FormView):
