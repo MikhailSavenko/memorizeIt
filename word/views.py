@@ -1,6 +1,7 @@
 from typing import Any, Optional
 
 from django.db.models.query import QuerySet
+from django.http.response import HttpResponse as HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView, FormView, ListView
 from django.urls import reverse_lazy
@@ -97,6 +98,14 @@ class RepeatRoom(FormView):
 
     form_class = RepeatRoomForm
     template_name = "word/room.html"
+
+    def render_to_response(self, context: dict[str, Any], **response_kwargs: Any) -> HttpResponse:
+        
+        if self.request.headers.get("HX-Request"):
+            self.template_name = "partials/word_card_partial.html"
+
+        return super().render_to_response(context, **response_kwargs)
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
