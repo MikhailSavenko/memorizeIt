@@ -4,7 +4,7 @@
   <br>
   <a href="{% url 'word:create_room' %}" class="btn btn-primary btn-lg">Create New Room</a>
 {% else %}
-  <form hx-post="{% url 'word:room' %}" hx-target="#word-card-container" hx-swap="innerHTML">
+  <form hx-post="{{ request.path }}" hx-target="#word-card-container" hx-swap="innerHTML">
     <div class="display-3 fw-bold">{{ word }} - {{ part_of_speech }} - ?</div>
     <div class="display-4 tex-muted">Translate the word above. You know it 🤓</div>
       
