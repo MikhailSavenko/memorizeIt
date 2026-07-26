@@ -148,6 +148,7 @@ class RepeatRoom(FormView):
         words_ids = remove_word_from_session(session=session, word_id=word_id)
         
         self.request.session["words_ids"] = words_ids
+        # Заменим метод за ГЕТ чтобы не было предыдущего ответа в форме
         self.request.method = "GET"
 
         # Вызываем get чтобы вызвать render_ro_response
@@ -158,6 +159,14 @@ class ReverseRepeatRoom(FormView):
 
     form_class = RepeatRoomForm
     template_name = "word/reverse_room.html"
+
+    def render_to_response(self, context: dict[str, Any], **response_kwargs: Any) -> HttpResponse:
+            # Работаем с HTMX в форме будет триггер, если будет отправлен POST с формы то HX-Request заголовок будет
+            # И мы отдадим не целую страницу, а лишь часть с новым словом
+            if self.request.headers.get("HX-Request"):
+                self.template_name = "partials/word_card_partial.html"
+    
+            return super().render_to_response(context, **response_kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -199,11 +208,11 @@ class ReverseRepeatRoom(FormView):
         words_ids = remove_word_from_session(session=session, word_id=word_id)
         
         self.request.session["words_ids"] = words_ids
-
-        if not words_ids:
-            return redirect("word:create_room") 
+        # Заменим метод за ГЕТ чтобы не было предыдущего ответа в форме
+        self.request.method = "GET"
         
-        return redirect("word:reverse_room")
+        # Вызываем get чтобы вызвать render_ro_response
+        return self.get(self.request)
     
 
 class Dictionary(ListView):
