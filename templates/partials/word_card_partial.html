@@ -5,8 +5,8 @@
   <a href="{% url 'word:create_room' %}" class="btn btn-primary btn-lg">Create New Room</a>
 {% else %}
   <form hx-post="{% url 'word:room' %}" hx-target="#word-card-container" hx-swap="innerHTML">
-    <h1 class="display-3"><b>{{ word }} - {{ part_of_speech }} - ?</b></h1>
-    <h3 class="display-4">Translate the word above. You know it 🤓</h3>
+    <div class="display-3 fw-bold">{{ word }} - {{ part_of_speech }} - ?</div>
+    <div class="display-4 tex-muted">Translate the word above. You know it 🤓</div>
       
       {% csrf_token %}
       <input type="hidden" name="word_id" value="{{ word_id }}">
