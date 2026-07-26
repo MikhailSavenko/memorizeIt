@@ -5,7 +5,7 @@ from word.clients import transcription_by_wordsapi
 
 class RepeatRoomForm(forms.Form):
     answer = forms.CharField(required=True, widget=forms.TextInput(
-        attrs={"class": "form-control", "placeholder": "Write your answer..", "autofocus": True}))
+        attrs={"class": "form-control", "placeholder": "Write your answer..", "autofocus": True, "autocomplete": "off"}))
     word_id = forms.IntegerField(widget=forms.HiddenInput())
 
 

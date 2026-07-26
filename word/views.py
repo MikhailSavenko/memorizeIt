@@ -148,6 +148,7 @@ class RepeatRoom(FormView):
         words_ids = remove_word_from_session(session=session, word_id=word_id)
         
         self.request.session["words_ids"] = words_ids
+        self.request.method = "GET"
 
         # Вызываем get чтобы вызвать render_ro_response
         return self.get(self.request)
