@@ -1,6 +1,7 @@
 from typing import Any, Optional
 
 from django.db.models.query import QuerySet
+from django.http import HttpRequest
 from django.http.response import HttpResponse as HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView, FormView, ListView
@@ -224,3 +225,7 @@ class Dictionary(ListView):
 
     def get_queryset(self) -> QuerySet[Word]:
         return Word.objects.prefetch_related("translation_set").all()
+
+
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        return super().get(request, *args, **kwargs)
