@@ -15,7 +15,7 @@
       <table class="table table-bordered table-hover">
         <thead class="thead-light">
           <tr>
-            <th>ID</th>
+            <th>№</th>
             <th>Word</th>
             <th>Part of Speech</th>
             <th>Transcription</th>
@@ -29,7 +29,7 @@
               <td>{{ word.word }}</td>
               <td>{{ word.part_of_speech }}</td>
               <td>[{{ word.transcription }}]</td>
-              <td>{{ word.translation }}</td>
+              <td>{{ word.translations_string }}</td>
             </tr>
           {% endfor %}
         </tbody>

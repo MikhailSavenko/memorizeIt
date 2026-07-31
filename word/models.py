@@ -32,6 +32,7 @@ class Word(models.Model):
         constraints = [
             models.UniqueConstraint(fields=["word", "part_of_speech"], name="unique_word_part_of_speech")
         ]
+        ordering = ["id"]
 
     def __str__(self):
         return self.word
