@@ -5,20 +5,42 @@
 
 
 {% block content %}
-    <div class="write-form">
-        <form method="post" action="{% url 'word:new_word' %}">
-            {% csrf_token %}
-            <div class="display-4">Add the word in your dictionary 📖</div>
-              {% if form.non_field_errors %}          
-                {% for error in form.non_field_errors %} 
-                  <div class="alert alert-danger">{{ error }}</div>
-                {% endfor %}
+  <div class="write-form">
+    <form method="post" action="{% url 'word:new_word' %}">
+      {% csrf_token %}
+      
+      <div class="display-4 mb-4">Add the word in your dictionary 📖</div>
+        
+        {% if form.non_field_errors %}          
+          {% for error in form.non_field_errors %} 
+            <div class="alert alert-danger">{{ error }}</div>
+          {% endfor %}
+        {% endif %}
+
+        {% for field in form %}
+          <div class="mb-3">
+            {{ field }}
+            {% if field.errors %}
+              <div class="text-danger small mb-1">{{ field.errors.0 }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+
+        {{ translation_formset.management_form }}
+        <div class="translation-block mb-4">
+          {% for translation_form in translation_formset %}
+            <div class="mb-2">
+              {{ translation_form.id }}
+              {{ translation_form.text }}
+              
+              {% if translation_form.text.errors %}
+                <div class="text-danger small mb-1">{{ translation_form.text.errors.0 }}</div>
               {% endif %}
-            {% for field in form %}
-                <p>{{ field }}</p>
-            {% endfor %}
-            <span>{{ error }}</span>
-            <button class='btn btn-success' type="submit">Add the word</button>
-        </form>
-    </div>
+            </div>
+          {% endfor %}
+        </div>
+
+      <button class='btn btn-success' type="submit">Add the word</button>
+    </form>
+  </div>
 {% endblock content %}

@@ -44,7 +44,7 @@ TranslationInlineFormSet = forms.inlineformset_factory(
     extra=1,
     can_delete=False,
     widgets={
-        "translation": forms.Select(attrs={
+        "text": forms.TextInput(attrs={
                 "class": "form-control",
                 "placeholder": "Write translation"
             })
