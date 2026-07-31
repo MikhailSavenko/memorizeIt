@@ -219,7 +219,6 @@ class Dictionary(ListView):
 
     model = Word
     template_name = "word/dictionary.html"
-    context_object_name = "words"
     
     paginate_by = 29
 
