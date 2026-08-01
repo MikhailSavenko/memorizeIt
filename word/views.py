@@ -7,10 +7,11 @@ from django.shortcuts import render, redirect
 from django.views.generic import CreateView, FormView, ListView
 from django.urls import reverse_lazy
 from django.db import transaction
+from django.db.models import Q
 
 from word.forms import WriteWordForm, ParametersCreateRoomForm, RepeatRoomForm, TranslationInlineFormSet, SearchAliveForm, SearchDictForm
 from word.models import Word
-from word.services import check_word_answer, get_all_word_ids, get_available_words_count, check_word_translation, get_next_practice_word_with_translations, get_range_word_ids, get_searched_word, remove_word_from_session, get_next_practice_word
+from word.services import calculate_target_page_and_id, check_word_answer, get_all_word_ids, get_available_words_count, check_word_translation, get_next_practice_word_with_translations, get_range_word_ids, get_searched_word, remove_word_from_session, get_next_practice_word
 
 
 def search(request):
@@ -231,9 +232,16 @@ class Dictionary(ListView):
         form = SearchDictForm(request.GET)
 
         if form.is_valid():
-            search_query = form.cleaned_data
+            search_query = form.cleaned_data.get("search_dict")
 
             if search_query:
-                
+
+                word_id, target_page = calculate_target_page_and_id(search_query=search_query, paginate_by=self.paginate_by)
+
+                if word_id and target_page:
+                    request.GET = request.GET.copy()
+                    request.GET["page"] = str(target_page)
+
+                    self.highlight_id = word_id
 
         return super().get(request, *args, **kwargs)
