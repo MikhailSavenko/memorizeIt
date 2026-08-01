@@ -89,3 +89,7 @@ class WriteWordForm(forms.ModelForm):
 
 class SearchAliveForm(forms.Form):
     text = forms.CharField(max_length=50, required=True)
+
+
+class SearchDictForm(forms.Form):
+    text = forms.CharField(max_length=50, required=False)
