@@ -8,7 +8,7 @@ from django.views.generic import CreateView, FormView, ListView
 from django.urls import reverse_lazy
 from django.db import transaction
 
-from word.forms import WriteWordForm, ParametersCreateRoomForm, RepeatRoomForm, TranslationInlineFormSet, SearchAliveForm
+from word.forms import WriteWordForm, ParametersCreateRoomForm, RepeatRoomForm, TranslationInlineFormSet, SearchAliveForm, SearchDictForm
 from word.models import Word
 from word.services import check_word_answer, get_all_word_ids, get_available_words_count, check_word_translation, get_next_practice_word_with_translations, get_range_word_ids, get_searched_word, remove_word_from_session, get_next_practice_word
 
@@ -228,4 +228,12 @@ class Dictionary(ListView):
 
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        form = SearchDictForm(request.GET)
+
+        if form.is_valid():
+            search_query = form.cleaned_data
+
+            if search_query:
+                
+
         return super().get(request, *args, **kwargs)
