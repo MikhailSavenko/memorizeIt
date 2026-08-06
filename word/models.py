@@ -79,7 +79,6 @@ class Word(models.Model):
     def get_absolute_url(self):
         return reverse("word_detail", kwargs={"slug": self.slug})
     
-        
 
 class Translation(models.Model):
     word = models.ForeignKey(Word, on_delete=models.CASCADE)
