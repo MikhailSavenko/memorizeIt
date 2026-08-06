@@ -1,6 +1,7 @@
 import secrets
 
 from django.db import models
+from django.urls import reverse
 from django.utils.text import slugify
 
 PART_OF_SPEECH = [
@@ -60,6 +61,7 @@ class Word(models.Model):
         return ", ".join(translations_all)
 
     def save(self, *args, **kwargs) -> None:
+        """Генерируем слаг при сохранении"""
 
         if not self.slug:
 
@@ -74,6 +76,9 @@ class Word(models.Model):
 
         super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse("word_detail", kwargs={"slug": self.slug})
+    
         
 
 class Translation(models.Model):
