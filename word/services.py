@@ -202,6 +202,9 @@ def get_searched_word(text: str) -> QuerySet[Word]:
 
     Returns:
         QuerySet[Word]: Набор отфильтрованных объектов Word со связанными переводами.
+
+    В будущем сюда добавится фильтрация по конкретному пользователю:
+        Word.objects.filter(user=user)
     """
     
     queryset = Word.objects.filter(Q(word__icontains=text)| Q(translation__text__icontains=text)).distinct()
@@ -213,6 +216,8 @@ def calculate_target_page_and_id(search_query: str, paginate_by: int) -> tuple[i
     """
     Принимает поисковый запрос и лимит страниц.
     Ищет слово (по №, тексту или переводу) и рассчитывает страницу для прыжка.
+    В будущем сюда добавится фильтрация по конкретному пользователю:
+        Word.objects.filter(user=user)
     """
     
     word_id = None
