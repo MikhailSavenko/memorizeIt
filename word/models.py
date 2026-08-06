@@ -35,7 +35,7 @@ class Word(models.Model):
     difficulty_level = models.IntegerField(default=0, verbose_name="Difficulty level")
 
     class Meta:
-        constraintMos = [
+        constraints = [
             # Добавить user для уникальности
             models.UniqueConstraint(fields=["word", "part_of_speech"], name="unique_word_part_of_speech")
         ]

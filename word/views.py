@@ -259,5 +259,8 @@ class Dictionary(ListView):
 class WordDetail(DetailView):
 
     model = Word
-    template_name = "word/detail_word.html"
+    template_name = "word/word_detail.html"
+
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
 
