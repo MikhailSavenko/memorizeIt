@@ -9,7 +9,13 @@
     <form method="post">
       {% csrf_token %}
       
-      <div class="display-4 mb-4">Add the word in your dictionary 📝</div>
+      <div class="display-4 mb-4">
+        {% if not form.instance.pk %}
+          Add the word in your dictionary 📝
+        {% else %}
+          Edit the word ✏️
+        {% endif %}
+      </div>
         
         {% if form.non_field_errors %}          
           {% for error in form.non_field_errors %} 
@@ -70,7 +76,13 @@
 
         </div>
 
-      <button class='btn btn-success' type="submit">Add the word</button>
+      <button class='btn btn-success' type="submit">
+        {% if not form.instance.pk%}
+          Add the word
+        {% else %}
+          Edit the word
+        {% endif %} 
+      </button>
     </form>
   </div>
 {% endblock content %}
