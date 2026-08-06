@@ -274,6 +274,9 @@ class WordUpdate(UpdateView):
 
     object: Word
 
+    def get_success_url(self) -> str:
+        return reverse_lazy("word_detail", kwargs={"slug": self.object.slug})
+
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
 
@@ -283,3 +286,18 @@ class WordUpdate(UpdateView):
         )
 
         return context
+
+    def form_valid(self, form):
+        formset = TranslationInlineFormSet(self.request.POST, instance=self.object)
+    
+        if not formset.is_valid():
+            return self.render_to_response(self.get_context_data(form=form))
+
+        with transaction.atomic():
+            self.object = form.save()
+            formset.instance = self.object
+            formset.save()
+
+        return redirect(self.get_success_url())
+
+        
