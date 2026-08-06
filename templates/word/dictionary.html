@@ -4,6 +4,7 @@
 {% block title %}{{ title }}{% endblock title %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'word/css/pagination.css' %}">
   <div class="dictionary">
     <div class="dictionary-content">
       <h2 class="display-4">Your dictionary 📘</h2>
@@ -35,6 +36,7 @@
           {% endfor %}
         </tbody>
       </table>
+      {% include "partials/pagination.html" %}
       </div>
     </div>
   </div>

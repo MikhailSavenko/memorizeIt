@@ -1,0 +1,66 @@
+/* Контейнер для центрирования */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Сбрасываем дефолтный список Bootstrap */
+.pagination-container .pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 8px;
+  align-items: center;
+  box-shadow: none; /* убираем тень Bootstrap */
+}
+
+/* Стили для каждой кнопки */
+.pagination-container .page-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 8px !important; /* !important перебьет закругления Bootstrap */
+  background-color: #f8fafc;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid #e2e8f0;
+}
+
+/* Состояние при наведении */
+.pagination-container .page-link:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+/* ИСПРАВЛЕНО: Зеленое активное состояние в цвет темы тренажера */
+.pagination-container .page-item.active .page-link {
+  background-color: #198754 !important; /* Цвет btn-success в Bootstrap */
+  border-color: #198754 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(25, 135, 84, 0.25); /* Мягкая зеленая тень */
+}
+
+/* Стили для заблокированных стрелочек (крайние страницы) */
+.pagination-container .page-item.disabled .page-link {
+  background-color: #f1f5f9;
+  color: #94a3b8;
+  border-color: #e2e8f0;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.pagination-container .page-dots {
+  padding: 0 8px;
+  color: #94a3b8;
+  font-weight: bold;
+}
