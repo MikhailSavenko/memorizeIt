@@ -4,10 +4,9 @@ from django.db.models.query import QuerySet
 from django.http import HttpRequest
 from django.http.response import HttpResponse as HttpResponse
 from django.shortcuts import render, redirect
-from django.views.generic import CreateView, FormView, ListView, DetailView
+from django.views.generic import CreateView, FormView, ListView, DetailView, UpdateView
 from django.urls import reverse_lazy
 from django.db import transaction
-from django.db.models import Q
 
 from word.forms import WriteWordForm, ParametersCreateRoomForm, RepeatRoomForm, TranslationInlineFormSet, SearchAliveForm, SearchDictForm
 from word.models import Word
@@ -264,3 +263,23 @@ class WordDetail(DetailView):
     slug_field = "slug"
     slug_url_kwarg = "slug"
 
+
+class WordUpdate(UpdateView):
+    model = Word
+    form_class = WriteWordForm
+    template_name = "word/write_word.html"
+
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
+
+    object: Word
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+
+        context["translation_formset"] = TranslationInlineFormSet(
+            self.request.POST or None,
+            instance=self.object
+        )
+
+        return context
