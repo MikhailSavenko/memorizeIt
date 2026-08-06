@@ -1,4 +1,7 @@
+import secrets
+
 from django.db import models
+from django.utils.text import slugify
 
 PART_OF_SPEECH = [
     ("noun", "Noun"),
@@ -31,7 +34,7 @@ class Word(models.Model):
     difficulty_level = models.IntegerField(default=0, verbose_name="Difficulty level")
 
     class Meta:
-        constraints = [
+        constraintMos = [
             # Добавить user для уникальности
             models.UniqueConstraint(fields=["word", "part_of_speech"], name="unique_word_part_of_speech")
         ]
@@ -56,6 +59,20 @@ class Word(models.Model):
         translations_all = [t.text for t in self.translation_set.all()] # type:ignore
         return ", ".join(translations_all)
 
+    def save(self, *args, **kwargs) -> None:
+
+        if not self.slug:
+
+            base_slug = slugify(f"{self.word.lower()}-{self.part_of_speech.lower()}")
+
+            if not base_slug:
+                base_slug = "some-word-another"
+
+            random_hash = secrets.token_hex(2)
+
+            self.slug = f"{base_slug}-{random_hash}"
+
+        super().save(*args, **kwargs)
 
         
 
