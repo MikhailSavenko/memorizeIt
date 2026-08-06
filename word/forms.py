@@ -94,7 +94,7 @@ class SearchAliveForm(forms.Form):
 class SearchDictForm(forms.Form):
     search_dict = forms.CharField(max_length=50, 
                            required=False,
-                           widget=forms.widgets.SearchInput(
+                           widget=forms.TextInput(
                                attrs={
                                    "placeholder": "Search by №, word and translation",
                                    "class": "form-control"
