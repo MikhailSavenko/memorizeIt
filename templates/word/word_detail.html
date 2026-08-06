@@ -1,10 +1,61 @@
 {% extends "base.html" %}
-
+{% load static %}
 
 {% block title %}{{ title }}{% endblock title %}
 
 {% block content %}
-  {% for word in page_obj %}
-    {{ word }}
-  {% endfor %}
+<link rel="stylesheet" href="{% static 'word/css/word_detail.css' %}">
+  <div class="word-card-container">
+    <div class="word-card">
+      
+      <!-- Левая колонка: Текст, Транскрипция, Звук, Переводы -->
+      <div class="word-card-main">
+        
+        <!-- Шапка: Слово + Часть речи -->
+        <div class="word-card-header">
+          <h1 class="word-title">{{ word.word }}</h1>
+          <span class="badge-part-of-speech">{{ word.part_of_speech }}</span>
+        </div>
+      
+        <!-- Строка произношения: Транскрипция + Будущая кнопка аудио -->
+        <div class="pronunciation-row">
+          <span class="transcription">[{{ word.transcription }}]</span>
+          
+          <!-- ЗАДЕЛ ПОД АУДИО: Аккуратная кнопка-иконка -->
+          <button class="btn-audio" title="Listen pronunciation" onclick="playAudio()">
+            <i class="fa-solid fa-volume-high"></i>
+          </button>
+          <!-- Скрытый тег аудио, который оживит кнопку в будущем -->
+          <audio id="word-audio" src="#"></audio>
+        </div>
+      
+        <!-- Блок переводов -->
+        <div class="translations-section">
+          <h3>Translations</h3>
+          <ul class="translations-list">
+            {% for translation in word.translation_set.all %}
+              <li><i class="fa-solid fa-check text-success me-2"></i>{{ translation.text }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      
+        <!-- Кнопки управления (Редактировать / Назад) -->
+        <div class="word-card-actions mt-4">
+          <a href="#" class="btn btn-success me-2"><i class="fa-solid fa-pen me-2"></i>Edit</a>
+          <a href="{% url 'word:dictionary' %}" class="btn btn-outline-secondary">Back to Dictionary</a>
+        </div>
+      
+      </div>
+    
+      <!-- ЗАДЕЛ ПОД КАРТИНКУ: Правая колонка -->
+      <div class="word-card-media">
+        <!-- Пока картинки нет, тут может быть красивый дефолтный паттерн или эмодзи -->
+        <div class="image-wrapper placeholder-image">
+          <i class="fa-regular fa-image"></i>
+          <!-- В будущем здесь будет: <img src="{{ word.image.url }}" alt="{{ word.word }}"> -->
+        </div>
+      </div>
+    
+    </div>
+  </div>
 {% endblock content %}
