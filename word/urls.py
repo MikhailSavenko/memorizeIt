@@ -1,4 +1,4 @@
-from word.views import WriteWord, CreateRoom, RepeatRoom, index, search, ReverseRepeatRoom, Dictionary, WordDetail
+from word.views import WriteWord, CreateRoom, RepeatRoom, index, search, ReverseRepeatRoom, Dictionary, WordDetail, WordUpdate
 from django.urls import path
 
 app_name = "word"
@@ -11,5 +11,6 @@ urlpatterns = [
     path("reverse_room/", ReverseRepeatRoom.as_view(), name="reverse_room"),
     path("search/", search, name="search"),
     path("dictionary/", Dictionary.as_view(), name="dictionary"),
-    path("word/<slug:slug>/", WordDetail.as_view(), name="word_detail")
+    path("word/<slug:slug>/", WordDetail.as_view(), name="word_detail"),
+    path("word/<slug:slug>/edit/", WordUpdate.as_view(), name="word_update")
 ]
