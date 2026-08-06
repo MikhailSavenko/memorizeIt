@@ -17,6 +17,8 @@ class Word(models.Model):
     word = models.CharField(max_length=255, verbose_name="English word", blank=False)
     part_of_speech = models.CharField(max_length=255, choices=PART_OF_SPEECH, verbose_name="Part of speech", default="another", blank=True)
     transcription = models.CharField(max_length=255, verbose_name="Transcription", blank=True, null=True)
+
+    slug = models.SlugField(blank=True, db_index=True, max_length=150, unique=True, verbose_name="Slug name")
     # translation = models.CharField(max_length=255, verbose_name="Translation", blank=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -30,6 +32,7 @@ class Word(models.Model):
 
     class Meta:
         constraints = [
+            # Добавить user для уникальности
             models.UniqueConstraint(fields=["word", "part_of_speech"], name="unique_word_part_of_speech")
         ]
         ordering = ["id"]
