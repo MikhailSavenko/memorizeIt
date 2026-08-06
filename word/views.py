@@ -4,7 +4,7 @@ from django.db.models.query import QuerySet
 from django.http import HttpRequest
 from django.http.response import HttpResponse as HttpResponse
 from django.shortcuts import render, redirect
-from django.views.generic import CreateView, FormView, ListView
+from django.views.generic import CreateView, FormView, ListView, DetailView
 from django.urls import reverse_lazy
 from django.db import transaction
 from django.db.models import Q
@@ -254,3 +254,10 @@ class Dictionary(ListView):
                     self.highlight_id = word_id
 
         return super().get(request, *args, **kwargs)
+
+
+class WordDetail(DetailView):
+
+    model = Word
+    template_name = "word/detail_word.html"
+
