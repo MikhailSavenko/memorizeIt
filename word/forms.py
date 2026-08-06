@@ -42,7 +42,7 @@ TranslationInlineFormSet = forms.inlineformset_factory(
     model=Translation,
     fields=("text",),
     extra=1,
-    can_delete=False,
+    can_delete=True,
     widgets={
         "text": forms.TextInput(attrs={
                 "class": "form-control",
