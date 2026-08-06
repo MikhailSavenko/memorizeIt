@@ -77,7 +77,7 @@ class Word(models.Model):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse("word_detail", kwargs={"slug": self.slug})
+        return reverse("word:word_detail", kwargs={"slug": self.slug})
     
 
 class Translation(models.Model):

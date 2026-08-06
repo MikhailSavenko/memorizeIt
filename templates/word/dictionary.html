@@ -26,7 +26,7 @@
         <tbody>
           {% widthratio page_obj.number|add:"-1" 1 page_obj.paginator.per_page as start_index%}
           {% for word in page_obj %}
-            <tr id="word-{{ word.id }}">
+            <tr id="word-{{ word.id }}" hx-get="{{ word.get_absolute_url }}" hx-trigger="click" hx-target="body" hx-push-url="true" class="style-pointer">
               <td>{{ start_index|add:forloop.counter }}</td>
               <td>{{ word.word }}</td>
               <td>{{ word.part_of_speech }}</td>
