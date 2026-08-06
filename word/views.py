@@ -224,9 +224,18 @@ class Dictionary(ListView):
     
     paginate_by = 29
 
+    highlight_id = None
+
     def get_queryset(self) -> QuerySet[Word]:
         return Word.objects.prefetch_related("translation_set").all()
 
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+
+        if self.highlight_id:
+            context["highlight_id"] = self.highlight_id
+
+        return context
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         form = SearchDictForm(request.GET)
