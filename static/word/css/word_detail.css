@@ -8,6 +8,7 @@
 
 /* Сама карточка */
 .word-card {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 300px; /* 300px под будущую картинку справа */
   gap: 40px;
@@ -113,11 +114,6 @@
 
 
 /* Кнопка удаления слова */
-/* Главная левая колонка карточки должна стать якорем для абсолютных элементов */
-.word-card-main {
-  position: relative; 
-}
-
 /* Стилизация самой кнопки-мусорки */
 .btn-delete-card {
   position: absolute;
