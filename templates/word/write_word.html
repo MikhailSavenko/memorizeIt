@@ -1,10 +1,11 @@
 {% extends "base.html" %}
-
+{% load static %}
 
 {% block title %}{{ title }}{% endblock title %}
 
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'word/css/write_word.css' %}">
   <div class="write-form">
     <form method="post">
       {% csrf_token %}
@@ -37,13 +38,30 @@
 
           <div id="translations-container">
             {% for translation_form in translation_formset %}
-              <div class="mb-2 translation-form-row">
+              <div class="mb-3 translation-form-row d-flex align-items-center gap-3">
                 {{ translation_form.id }}
-                {{ translation_form.text }}
+  
+                  <!-- Поле ввода перевода забирает всё свободное место слева -->
+                  <div class="flex-grow-1">
+                    {{ translation_form.text }}
+                    {% if translation_form.text.errors %}
+                      <div class="text-danger small mt-1">{{ translation_form.text.errors.0 }}</div>
+                    {% endif %}
+                  </div>
 
-                {% if translation_form.text.errors %}
-                  <div class="text-danger small mb-1">{{ translation_form.text.errors.0 }}</div>
-                {% endif %}
+                  <!-- Красивый свитч удаления справа от инпута -->
+                  {% if translation_formset.can_delete and translation_form.instance.pk %}
+                    <div class="form-check form-switch m-0">
+                      <!-- Добавляем класс form-check-input для стиля Bootstrap -->
+                      <input type="checkbox" 
+                             name="{{ translation_form.DELETE.html_name }}" 
+                             id="{{ translation_form.DELETE.id_for_label }}" 
+                             class="form-check-input">
+                      <label class="form-check-label" for="{{ translation_form.DELETE.id_for_label }}">
+                        Delete
+                      </label>
+                    </div>
+                  {% endif %}
               </div>
             {% endfor %}
           </div>
@@ -52,6 +70,7 @@
             <div class="mb-2 translation-form-row">
               {{ translation_formset.empty_form.id }}
               {{ translation_formset.empty_form.text }}
+              
               {% if translation_formset.empty_form.text.errors %}
                 <div class="text-danger small mt-1">{{ translation_formset.empty_form.text.errors.0 }}</div>
               {% endif %}

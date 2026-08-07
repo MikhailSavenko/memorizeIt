@@ -1,0 +1,61 @@
+/* Контейнер строки перевода */
+.translation-form-row {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* Создает красивый фиксированный отступ между инпутом и свитчем */
+  margin-bottom: 12px;
+}
+
+/* Выравниваем сам блок переключателя */
+.translation-form-row .form-switch {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Отступ между самим тумблером и текстом "Delete" */
+  padding-left: 0; /* Сброс дефолтного отступа Bootstrap */
+  margin: 0;
+}
+
+/* Делаем тумблер аккуратным и нейтральным в выключенном состоянии */
+.translation-form-row .form-switch .form-check-input {
+  cursor: pointer;
+  margin: 0; /* Центрируем по вертикали */
+  border-color: #cbd5e1 !important; /* Спокойная серая рамка в обычном состоянии */
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+/* ИСПРАВЛЕНО: Убираем ТОЛЬКО голубую тень (box-shadow), но сохраняем серую рамку! */
+.translation-form-row .form-switch .form-check-input:focus,
+.translation-form-row .form-switch .form-check-input:active {
+  border-color: #cbd5e1 !important; /* Тумблер больше НЕ исчезнет, рамка останется серой */
+  box-shadow: none !important;      /* Полное уничтожение голубого свечения */
+}
+
+/* МАГИЯ КРАСНОГО ЦВЕТА: красим свитч при активации БЕЗ потери ползунка */
+.translation-form-row .form-switch .form-check-input:checked {
+  background-color: #dc3545 !important; /* Красный цвет Bootstrap danger */
+  border-color: #dc3545 !important;
+  /* Сдвигаем цветовой тон встроенного SVG, чтобы кружочек остался идеально белым */
+  filter: grayscale(0%) brightness(100%) !important; 
+}
+
+/* ИСПРАВЛЕНО: Для включенного тумблера при фокусе/клике жестко сохраняем КРАСНУЮ рамку без синевы */
+.translation-form-row .form-switch .form-check-input:checked:focus,
+.translation-form-row .form-switch .form-check-input:checked:active {
+  border-color: #dc3545 !important; /* Рамка остается четкой красной */
+  box-shadow: none !important;      /* Никакого голубого ореола */
+}
+
+/* Стиль текста "Delete" */
+.translation-form-row .form-check-label {
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #64748b; /* В обычном состоянии текст спокойно-серый */
+  transition: color 0.15s ease;
+  user-select: none;
+}
+
+/* Если свитч включен — текст тоже плавно окрашивается в красный */
+.translation-form-row .form-switch .form-check-input:checked ~ .form-check-label {
+  color: #dc3545;
+}
