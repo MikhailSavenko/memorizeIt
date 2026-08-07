@@ -50,7 +50,7 @@
       
         <!-- Кнопки управления (Редактировать / Назад) -->
         <div class="word-card-actions mt-4">
-          <a href="{% url 'word:word_update' slug=word.slug %}" class="btn btn-success me-2"><i class="fa-solid fa-pen me-2"></i>Edit</a>
+          <a href="{% url 'word:word_update' word.slug %}" class="btn btn-success me-2"><i class="fa-solid fa-pen me-2"></i>Edit</a>
           <a href="{% url 'word:dictionary' %}" class="btn btn-outline-secondary">Back to Dictionary</a>
         </div>
       
