@@ -110,3 +110,39 @@
     order: -1; /* Картинка на мобилке прыгнет наверх слова */
   }
 }
+
+
+/* Кнопка удаления слова */
+/* Главная левая колонка карточки должна стать якорем для абсолютных элементов */
+.word-card-main {
+  position: relative; 
+}
+
+/* Стилизация самой кнопки-мусорки */
+.btn-delete-card {
+  position: absolute;
+  top: 0;
+  right: 0; /* Прижимаем строго в верхний правый угол текстового блока */
+  
+  background: transparent;
+  border: none;
+  color: #94a3b8; /* Спокойный, приглушенный серый цвет в обычном состоянии */
+  font-size: 1.25rem;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 50%;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  transition: all 0.2s ease-in-out;
+}
+
+/* При наведении кнопка мягко загорается красным */
+.btn-delete-card:hover {
+  background-color: #fef2f2; /* Мягкий светло-красный фон при наведении */
+  color: #dc3545;            /* Строгий красный Bootstrap danger */
+  transform: scale(1.08);    /* Легкое увеличение для интерактивности */
+}

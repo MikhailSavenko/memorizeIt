@@ -10,6 +10,13 @@
       
       <!-- Левая колонка: Текст, Транскрипция, Звук, Переводы -->
       <div class="word-card-main">
+
+        <button class="btn-delete-card" 
+                hx-delete="{% url 'word:word_delete' word.slug %}" 
+                hx-confirm="Are you sure you want to delete the word '{{ word.word }}'?"
+                title="Delete word">
+                  <i class="fa-solid fa-trash-can"></i>
+        </button>
         
         <!-- Шапка: Слово + Часть речи -->
         <div class="word-card-header">
