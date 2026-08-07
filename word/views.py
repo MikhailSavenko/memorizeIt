@@ -4,7 +4,7 @@ from django.db.models.query import QuerySet
 from django.http import HttpRequest
 from django.http.response import HttpResponse as HttpResponse
 from django.shortcuts import render, redirect
-from django.views.generic import CreateView, FormView, ListView, DetailView, UpdateView
+from django.views.generic import CreateView, FormView, ListView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.db import transaction
 
@@ -300,4 +300,8 @@ class WordUpdate(UpdateView):
 
         return redirect(self.get_success_url())
 
-        
+
+class WordDelete(DeleteView):
+    model = Word
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
