@@ -37,6 +37,12 @@ class ParametersCreateRoomForm(forms.Form):
         return cleaned_data
     
 
+class TranslationsFormSetErrorMessage(forms.BaseInlineFormSet):
+    default_error_messages = {
+        "too_few_forms": "The word must have at least one translation!",
+    }
+
+
 TranslationInlineFormSet = forms.inlineformset_factory(
     parent_model=Word,
     model=Translation,
@@ -45,12 +51,14 @@ TranslationInlineFormSet = forms.inlineformset_factory(
     can_delete=True,
     min_num=1,
     validate_min=True,
+    formset=TranslationsFormSetErrorMessage,
     widgets={
         "text": forms.TextInput(attrs={
                 "class": "form-control",
                 "placeholder": "Write translation"
             })
-    }
+    },
+    error_messages={"__all__": {"min_num": "The word must have at least one translation!", "too_few_forms": "The word must have at least one translation!"}}
 )
     
 

@@ -291,7 +291,7 @@ class WordUpdate(UpdateView):
         formset = TranslationInlineFormSet(self.request.POST, instance=self.object)
     
         if not formset.is_valid():
-            return self.render_to_response(self.get_context_data(form=form))
+            return self.render_to_response(self.get_context_data(form=form, translation_formset=formset))
 
         with transaction.atomic():
             self.object = form.save()
