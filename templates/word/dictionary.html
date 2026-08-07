@@ -5,41 +5,69 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'word/css/pagination.css' %}">
+<link rel="stylesheet" href="{% static 'word/css/dictionary.css' %}"> 
+
   <div class="dictionary">
-    <div class="dictionary-content">
-      <h2 class="display-4">Your dictionary 📗</h2>
-      <br>
+    <!-- Обернули таблицу в контейнер для контроля максимальной ширины -->
+    <div class="dictionary-content dictionary-table-container">
+      <h2 class="display-4 text-center mb-4">Your dictionary 📗</h2>
+      
       <form action="{% url 'word:dictionary' %}" method="get">
-        <input type="text" name="search_dict" placeholder="Search by №, word and translation" class="form-control" />
+        <input type="text" name="search_dict" placeholder="Search by №, word and translation" class="form-control mb-4" />
       </form>
-      <br>
-      <table class="table table-bordered table-hover">
-        <thead class="thead-light">
+
+      <!-- Убрали Bootstrap-классы table/table-bordered и дали свой чистый класс -->
+      <table class="dictionary-clean-table">
+        <thead>
           <tr>
-            <th>№</th>
-            <th>Word</th>
-            <th>Part of Speech</th>
-            <th>Transcription</th>
-            <th>Translation</th>
+            <th class="col-num">№</th>
+            <th class="col-word">Word</th>
+            <th class="col-pos">Part of Speech</th>
+            <th class="col-transcription">Transcription</th>
+            <th class="col-translation">Translation</th>
+            <th class="col-actions">Action</th>
           </tr>
         </thead>
         <tbody>
           {% widthratio page_obj.number|add:"-1" 1 page_obj.paginator.per_page as start_index%}
           {% for word in page_obj %}
-            <tr id="word-{{ word.id }}" hx-get="{{ word.get_absolute_url }}" hx-trigger="click" hx-target="body" hx-push-url="true" class="style-pointer">
-              <td>{{ start_index|add:forloop.counter }}</td>
-              <td>{{ word.word }}</td>
-              <td>{{ word.part_of_speech }}</td>
-              <td>[{{ word.transcription }}]</td>
-              <td>{{ word.translations_string }}</td>
+            <!-- Каждая строка — независимая белая плашка -->
+            <tr id="word-{{ word.id }}" 
+                hx-get="{{ word.get_absolute_url }}" 
+                hx-trigger="click" 
+                hx-target="body" 
+                hx-push-url="true" 
+                class="word-table-row">
+              
+              <td class="cell-num">{{ start_index|add:forloop.counter }}</td>
+              <td class="cell-word"><strong>{{ word.word }}</strong></td>
+              <td class="cell-pos"><span class="badge-part-of-speech-mini">{{ word.part_of_speech }}</span></td>
+              <td class="cell-transcription">{% if word.transcription %}[{{ word.transcription }}]{% else %}—{% endif %}</td>
+              <td class="cell-translation">{{ word.translations_string }}</td>
+              
+              <td class="cell-actions">
+                <!-- Дали класс btn-delete-table-row, настроили точечное удаление строки без перезагрузки -->
+                <button class="btn-delete-table-row" 
+                        hx-post="{% url 'word:word_delete' word.slug %}" 
+                        hx-confirm="Are you sure you want to delete the word '{{ word.word }}'?"
+                        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                        hx-target="body"
+                        hx-swap="outerHTML"
+                        hx-trigger="click consume"
+                        title="Delete word">
+                          <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
+      
       {% include "partials/pagination.html" %}
       </div>
     </div>
   </div>
+
 {% if highlight_id %}
   <div id="dictionary-table" data-highlight-id="{{ highlight_id }}"></div>
   <script src="{% static 'word/js/dict_search.js' %}"></script>

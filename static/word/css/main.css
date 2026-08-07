@@ -26,27 +26,4 @@
     height: 80vh;
 }
 
-.dictionary {
-    margin-top: 50px;
-    display: flex;
-    justify-content: center;
-    min-height: 100vh;
-
-}
-
-.dictionary-content {
-    text-align: center;
-    width: 80%;
-}
-
-.dict_words ul {
-    text-align: left;
-    display: inline-block;   /* Чтобы не растягивался на всю ширину */
-    margin-top: 20px;
-}
-
-.dictionary-content h2 {
-    margin-bottom: 30px; 
-}
-
 .style-pointer { cursor: pointer;}

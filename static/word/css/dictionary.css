@@ -1,0 +1,127 @@
+/* ==========================================================================
+   СТАРЫЕ СТИЛИ (Внешнее позиционирование страницы)
+   ========================================================================== */
+.dictionary {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.dictionary-content {
+    width: 80%;
+    max-width: 1100px; /* Защита от избыточного растягивания на огромных мониторах */
+}
+
+.dictionary-content h2 {
+    margin-bottom: 30px; 
+    text-align: center; /* Заголовок "Your dictionary" оставляем строго по центру */
+}
+
+/* ==========================================================================
+   НОВЫЕ СТИЛИ (Превращение таблицы в список парящих плашек)
+   ========================================================================== */
+
+/* Сброс стандартных рамок и создание воздуха между строками */
+.dictionary-clean-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 16px; /* Создает красивый пустой шаг между плашками */
+}
+
+/* Стилизация заголовков таблицы (Шапка) */
+.dictionary-clean-table th {
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0 24px 8px 24px;
+  border: none;
+}
+
+/* СТИЛИЗАЦИЯ СТРОКИ-ПЛАШКИ (Стиль большой карточки слова) */
+.word-table-row {
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Скругления углов по краям плашки */
+.word-table-row td:first-child {
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+  border-left: 1px solid #e2e8f0;
+}
+.word-table-row td:last-child {
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+  border-right: 1px solid #e2e8f0;
+}
+
+/* Настройки внутренних ячеек плашки */
+.word-table-row td {
+  padding: 20px 24px;
+  font-size: 1.05rem;
+  color: #334155;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  background: #ffffff; 
+  vertical-align: middle; /* Идеальное центрирование всех элементов строки по вертикали */
+}
+
+/* Эффект парения и мягкой тени при наведении на строчку-плашку */
+.word-table-row:hover td {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1;
+}
+.word-table-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+}
+
+/* Зеленый мини-бейдж части речи */
+.badge-part-of-speech-mini {
+  background-color: #e8f5e9;
+  color: #198754;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+/* Шрифт самого слова */
+.cell-word strong {
+  color: #0f172a;
+  font-size: 1.15rem;
+}
+
+/* Транскрипция monospace шрифтом */
+.cell-transcription {
+  font-family: monospace;
+  color: #64748b;
+}
+
+/* МИНИМАЛИСТИЧНАЯ МУСОРКА В КОНЦЕ ПЛАШКИ */
+.btn-delete-table-row {
+  background: transparent;
+  border: none;
+  color: #94a3b8; 
+  font-size: 1.1rem;
+  padding: 6px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  transition: all 0.15s ease-in-out;
+}
+
+/* При наведении мусорка аккуратно загорается красным */
+.btn-delete-table-row:hover {
+  background-color: #fef2f2;
+  color: #dc3545;
+  transform: scale(1.1);
+}
