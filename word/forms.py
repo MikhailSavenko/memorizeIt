@@ -57,8 +57,7 @@ TranslationInlineFormSet = forms.inlineformset_factory(
                 "class": "form-control",
                 "placeholder": "Write translation"
             })
-    },
-    error_messages={"__all__": {"min_num": "The word must have at least one translation!", "too_few_forms": "The word must have at least one translation!"}}
+    }
 )
     
 
