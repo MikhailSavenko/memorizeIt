@@ -23,7 +23,7 @@
   transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-/* ИСПРАВЛЕНО: Убираем ТОЛЬКО голубую тень (box-shadow), но сохраняем серую рамку! */
+/* Убираем ТОЛЬКО голубую тень (box-shadow), но сохраняем серую рамку! */
 .translation-form-row .form-switch .form-check-input:focus,
 .translation-form-row .form-switch .form-check-input:active {
   border-color: #cbd5e1 !important; /* Тумблер больше НЕ исчезнет, рамка останется серой */
@@ -38,7 +38,7 @@
   filter: grayscale(0%) brightness(100%) !important; 
 }
 
-/* ИСПРАВЛЕНО: Для включенного тумблера при фокусе/клике жестко сохраняем КРАСНУЮ рамку без синевы */
+/* Для включенного тумблера при фокусе/клике жестко сохраняем КРАСНУЮ рамку без синевы */
 .translation-form-row .form-switch .form-check-input:checked:focus,
 .translation-form-row .form-switch .form-check-input:checked:active {
   border-color: #dc3545 !important; /* Рамка остается четкой красной */
