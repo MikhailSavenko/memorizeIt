@@ -305,3 +305,5 @@ class WordDelete(DeleteView):
     model = Word
     slug_field = "slug"
     slug_url_kwarg = "slug"
+
+    success_url = reverse_lazy("word:dictionary")
