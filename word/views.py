@@ -315,7 +315,7 @@ class WordDelete(DeleteView):
     success_url = reverse_lazy("word:dictionary")
 
 #Авторизация login_required
-def word_mass_delete(request):
+def word_bulk_delete(request):
     if request.method == "POST":
         raw_data = request.POST.get("delete_ids", "[]")
 
