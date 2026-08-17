@@ -1,5 +1,7 @@
+import json
 from typing import Optional
 from django.db.models import QuerySet, Q
+from django.core.exceptions import ValidationError
 
 from word.models import Word, Translation
 
@@ -235,3 +237,37 @@ def calculate_target_page_and_id(search_query: str, paginate_by: int) -> tuple[i
         target_page = (position // paginate_by) + 1
 
     return word_id, target_page
+
+
+def parse_and_validate_word_ids_json(row_ids_data: str) -> list[int]:
+    """Парсит JSON-строку с ID.
+
+    Args:
+        row_ids_data: Строка в формате JSON, содержащая массив идентификаторов.
+
+    Raises:
+        ValidationError: Если передан некорректный JSON или в массиве 
+            отсутствуют валидные целочисленные ID.
+    """
+    try:
+        parsed_data = json.loads(row_ids_data)
+
+    except json.JSONDecodeError:
+        raise ValidationError("Invalid JSON format for delete!")
+
+    else:
+        ids = [x for x in parsed_data if isinstance(x, int)]
+
+        if not ids:
+            raise ValidationError("No valid word IDs provided")
+
+        return ids
+
+def bulk_delete_words_by_ids(ids: list[int]) -> None:
+    """Прямое каскадное удаление слов из базы данных по списку их идентификаторов.
+
+    Args:
+        ids: Список валидных целочисленных первичных ключей (ID) слов.
+    """
+    # Добавить user=request.user в фильтрацию
+    Word.objects.filter(id__in=ids).delete()

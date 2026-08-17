@@ -1,16 +1,19 @@
+import json
+
 from typing import Any, Optional
 
 from django.db.models.query import QuerySet
 from django.http import HttpRequest
-from django.http.response import HttpResponse as HttpResponse
+from django.http.response import HttpResponse as HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView, FormView, ListView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.db import transaction
+from django.core.exceptions import ValidationError
 
 from word.forms import WriteWordForm, ParametersCreateRoomForm, RepeatRoomForm, TranslationInlineFormSet, SearchAliveForm, SearchDictForm
 from word.models import Word
-from word.services import calculate_target_page_and_id, check_word_answer, get_all_word_ids, get_available_words_count, check_word_translation, get_next_practice_word_with_translations, get_range_word_ids, get_searched_word, remove_word_from_session, get_next_practice_word
+from word.services import bulk_delete_words_by_ids, calculate_target_page_and_id, check_word_answer, get_all_word_ids, get_available_words_count, check_word_translation, get_next_practice_word_with_translations, get_range_word_ids, get_searched_word, parse_and_validate_word_ids_json, remove_word_from_session, get_next_practice_word
 
 
 def search(request):
@@ -311,6 +314,17 @@ class WordDelete(DeleteView):
 
     success_url = reverse_lazy("word:dictionary")
 
-
+#Авторизация login_required
 def word_mass_delete(request):
-    pass
+    if request.method == "POST":
+        raw_data = request.POST.get("delete_ids", "[]")
+
+        try:
+
+            parsed_data = parse_and_validate_word_ids_json(raw_data)
+            bulk_delete_words_by_ids(parsed_data)
+
+        except ValidationError as e:
+            return JsonResponse({"error": e.message}, status=400)
+
+        return JsonResponse({"status": "success"}, status=200)
