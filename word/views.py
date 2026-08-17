@@ -310,3 +310,7 @@ class WordDelete(DeleteView):
     slug_url_kwarg = "slug"
 
     success_url = reverse_lazy("word:dictionary")
+
+
+def word_mass_delete(request):
+    pass
