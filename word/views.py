@@ -1,5 +1,3 @@
-import json
-
 from typing import Any, Optional
 
 from django.db.models.query import QuerySet
@@ -36,6 +34,22 @@ def search(request):
 
 def index(request):
     return render(request, "word/index.html")
+
+
+#Авторизация login_required
+def word_bulk_delete(request):
+    if request.method == "POST":
+        raw_data = request.POST.get("delete_ids", "[]")
+
+        try:
+
+            parsed_data = parse_and_validate_word_ids_json(raw_data)
+            bulk_delete_words_by_ids(parsed_data)
+
+        except ValidationError as e:
+            return JsonResponse({"error": e.message}, status=400)
+
+        return JsonResponse({"status": "success"}, status=200)
 
 
 class WriteWord(CreateView):
@@ -314,17 +328,3 @@ class WordDelete(DeleteView):
 
     success_url = reverse_lazy("word:dictionary")
 
-#Авторизация login_required
-def word_bulk_delete(request):
-    if request.method == "POST":
-        raw_data = request.POST.get("delete_ids", "[]")
-
-        try:
-
-            parsed_data = parse_and_validate_word_ids_json(raw_data)
-            bulk_delete_words_by_ids(parsed_data)
-
-        except ValidationError as e:
-            return JsonResponse({"error": e.message}, status=400)
-
-        return JsonResponse({"status": "success"}, status=200)

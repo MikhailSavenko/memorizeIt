@@ -24,6 +24,6 @@ window.addEventListener('pagehide', function () {
 
         // Магия sendBeacon: браузер ГАРАНТИРОВАННО доставит этот POST-запрос на бэк,
         // даже если вкладку закрыли крестиком!
-        navigator.sendBeacon('/word/mass-delete/', formData);
+        navigator.sendBeacon('/word/bulk-destroy/', formData);
     }
 });
