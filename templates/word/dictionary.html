@@ -46,7 +46,6 @@
               <td class="cell-translation">{{ word.translations_string }}</td>
               
               <td class="cell-actions">
-                <!-- Дали класс btn-delete-table-row, настроили точечное удаление строки без перезагрузки -->
                 <button class="btn-delete-table-row" 
                         hx-post="{% url 'word:word_delete' word.slug %}" 
                         hx-confirm="Are you sure you want to delete the word '{{ word.word }}'?"
@@ -67,9 +66,9 @@
       </div>
     </div>
   </div>
-
 {% if highlight_id %}
   <div id="dictionary-table" data-highlight-id="{{ highlight_id }}"></div>
   <script src="{% static 'word/js/dict_search.js' %}"></script>
 {% endif %}
+  <script src="{% static 'word/js/words_bulk_delete.js' %}"></script>
 {% endblock content %}
