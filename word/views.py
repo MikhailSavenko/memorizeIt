@@ -263,6 +263,9 @@ class WordDetail(DetailView):
     slug_field = "slug"
     slug_url_kwarg = "slug"
 
+    def get_queryset(self) -> QuerySet[Any, Any]:
+        return super().get_queryset().prefetch_related("translation_set")
+
 
 class WordUpdate(UpdateView):
     model = Word
