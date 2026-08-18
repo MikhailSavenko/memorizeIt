@@ -40,17 +40,15 @@ def index(request):
 #Авторизация login_required
 @require_POST
 def word_bulk_delete(request):
-    if request.method == "POST":
-        raw_data = request.POST.get("delete_ids", "[]")
-        try:
-
-            parsed_data = parse_and_validate_word_ids_json(raw_data)
-            bulk_delete_words_by_ids(parsed_data)
-
-        except ValidationError as e:
-            return JsonResponse({"error": e.message}, status=400)
-
-        return JsonResponse({"status": "success"}, status=200)
+    raw_data = request.POST.get("delete_ids", "[]")
+    
+    try:
+        parsed_data = parse_and_validate_word_ids_json(raw_data)
+        bulk_delete_words_by_ids(parsed_data)
+    except ValidationError as e:
+        return JsonResponse({"error": e.message}, status=400)
+    
+    return JsonResponse({"status": "success"}, status=200)
 
 
 class WriteWord(CreateView):
