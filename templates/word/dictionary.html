@@ -47,12 +47,8 @@
               
               <td class="cell-actions">
                 <button class="btn-delete-table-row" 
-                        hx-post="{% url 'word:word_delete' word.slug %}" 
-                        hx-confirm="Are you sure you want to delete the word '{{ word.word }}'?"
-                        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                        hx-target="body"
-                        hx-swap="outerHTML"
-                        hx-trigger="click consume"
+                        type="buttom"
+                        onclick="event.stopPropagation(); toggleSoftDelete(this, '{{ word.id }}')"
                         title="Delete word">
                           <i class="fa-solid fa-trash-can"></i>
                 </button>

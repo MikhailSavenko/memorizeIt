@@ -125,3 +125,38 @@
   color: #dc3545;
   transform: scale(1.1);
 }
+
+
+/* ==========================================================================
+   СТИЛИ ДЛЯ МЯГКОГО JS-УДАЛЕНИЯ 
+   ========================================================================== */
+
+/* 1. Эффект для мягко удаленной строки-плашки */
+.word-table-row.is-deleted-blur td {
+  background-color: #f8fafc !important; /* Спокойный матовый серый фон */
+  color: #94a3b8 !important;            /* Серый приглушенный текст */
+  opacity: 0.55;                        /* Полупрозрачность всей плашки */
+  text-decoration: line-through;        /* Красивое зачеркивание слова и перевода */
+  pointer-events: none;                 /* Намертво блокируем клик (нельзя улететь на карточку) */
+  box-shadow: none !important;          /* Убираем тени */
+  transform: none !important;           /* Запрещаем плашке приподниматься при наведении */
+  transition: all 0.2s ease-in-out;
+}
+
+/* 2. КРИТИЧЕСКИ ВАЖНО: возвращаем кликабельность ячейке с кнопкой Undo.
+   Если этого не сделать, pointer-events: none заблокирует и саму кнопку отмены! */
+.word-table-row.is-deleted-blur td:last-child {
+  pointer-events: auto !important;
+}
+
+/* 3. Меняем поведение иконки внутри серой плашки (стиль кнопки Undo) */
+.word-table-row.is-deleted-blur .btn-delete-table-row {
+  color: #198754; /* Меняем цвет на благородный зеленый Bootstrap success */
+}
+
+/* Эффект при наведении на зеленую стрелочку Undo */
+.word-table-row.is-deleted-blur .btn-delete-table-row:hover {
+  background-color: #e8f5e9; /* Мягкая зеленая подсветка кружка */
+  color: #198754;
+  transform: scale(1.1);
+}

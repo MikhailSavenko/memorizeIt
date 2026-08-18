@@ -8,6 +8,7 @@ from django.views.generic import CreateView, FormView, ListView, DetailView, Upd
 from django.urls import reverse_lazy
 from django.db import transaction
 from django.core.exceptions import ValidationError
+from django.views.decorators.http import require_POST
 
 from word.forms import WriteWordForm, ParametersCreateRoomForm, RepeatRoomForm, TranslationInlineFormSet, SearchAliveForm, SearchDictForm
 from word.models import Word
@@ -37,10 +38,10 @@ def index(request):
 
 
 #Авторизация login_required
+@require_POST
 def word_bulk_delete(request):
     if request.method == "POST":
         raw_data = request.POST.get("delete_ids", "[]")
-
         try:
 
             parsed_data = parse_and_validate_word_ids_json(raw_data)
