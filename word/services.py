@@ -263,6 +263,7 @@ def parse_and_validate_word_ids_json(row_ids_data: str) -> list[int]:
 
         return ids
 
+
 def bulk_delete_words_by_ids(ids: list[int]) -> None:
     """Прямое каскадное удаление слов из базы данных по списку их идентификаторов.
 
