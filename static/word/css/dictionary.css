@@ -173,7 +173,6 @@
     width: 100%;
     max-width: 100%; /* Убедитесь, что родительский блок не сжат */
     margin: 20px 0;
-    padding-right: 2px; /* Легкое смещение, чтобы встать вровень с мусоркой */
     
     /* Анимация плавного появления */
     animation: fadeInSlide 0.3s ease-out forwards;
