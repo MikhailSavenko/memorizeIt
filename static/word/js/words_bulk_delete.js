@@ -31,7 +31,7 @@ const saveBtn = document.getElementById('save-deletes-btn');
 if (saveBtn) {
     saveBtn.addEventListener('click', async function() {
         saveBtn.disabled = true;
-        saveBtn.innerText = 'Сохранение...';
+        saveBtn.innerText = 'Saving...';
 
         const formData = new FormData();
         formData.append('delete_ids', JSON.stringify(deletedWordIds));
