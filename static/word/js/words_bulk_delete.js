@@ -45,10 +45,10 @@ if (saveBtn) {
             deletedWordIds = [];
             window.location.reload(); 
         } catch (error) {
-            console.error('Ошибка при сохранении:', error);
-            alert('Не удалось сохранить изменения. Проверьте интернет-соединение.');
+            console.error('Error in save:', error);
+            alert('No save. Bad Internet connect.');
             saveBtn.disabled = false;
-            saveBtn.innerText = 'Сохранить изменения';
+            saveBtn.innerText = 'Save changes';
         }
     });
 }
