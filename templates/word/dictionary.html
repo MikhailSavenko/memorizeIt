@@ -6,7 +6,6 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'word/css/pagination.css' %}">
 <link rel="stylesheet" href="{% static 'word/css/dictionary.css' %}"> 
-
   <div class="dictionary">
     <!-- Обернули таблицу в контейнер для контроля максимальной ширины -->
     <div class="dictionary-content dictionary-table-container">
@@ -47,7 +46,7 @@
               
               <td class="cell-actions">
                 <button class="btn-delete-table-row" 
-                        type="buttom"
+                        type="button"
                         onclick="event.stopPropagation(); toggleSoftDelete(this, '{{ word.id }}')"
                         title="Delete word">
                           <i class="fa-solid fa-trash-can"></i>
@@ -57,7 +56,11 @@
           {% endfor %}
         </tbody>
       </table>
-      
+        <div id="save-changes-container" style="display: none; justify-content: flex-end; margin-top: 15px; margin-bottom: 15px;">
+          <button id="save-deletes-btn" style="background-color: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 5px; font-size: 16px; cursor: pointer; transition: background 0.2s;">
+              Сохранить изменения
+          </button>
+        </div>
       {% include "partials/pagination.html" %}
       </div>
     </div>

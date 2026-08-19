@@ -1,6 +1,9 @@
 let deletedWordIds = [];
 
 function toggleSoftDelete(button, wordId) {
+
+    const saveContainer = document.getElementById('save-changes-container');
+
     // Приводим к числу, чтобы в массиве были строго Integer
     const numericId = parseInt(wordId, 10);
     const row = document.getElementById(`word-${numericId}`);
@@ -13,19 +16,42 @@ function toggleSoftDelete(button, wordId) {
         deletedWordIds = deletedWordIds.filter(id => id !== numericId);
         button.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
     }
+
+    // --- А ВОТ СЮДА ДОБАВЛЯЕМ ТОЛЬКО ПРОВЕРКУ ДЛЯ КНОПКИ ---
+    if (deletedWordIds.length > 0) {
+        saveContainer.style.display = 'flex'; // Показываем кнопку сохранения
+    } else {
+        saveContainer.style.display = 'none';  // Прячем кнопку, если все слова вернули назад
+    }
 }
 
-// ГЛОБАЛЬНЫЙ ПЕРЕХВАТЧИК: Срабатывает всегда, когда пользователь покидает страницу!
-window.addEventListener('pagehide', function () {
-    if (deletedWordIds.length > 0) {
-        // Подготавливаем данные в безопасном формате FormData
+// Обработчик клика по самой кнопке "Сохранить изменения"
+const saveBtn = document.getElementById('save-deletes-btn');
+
+if (saveBtn) {
+    saveBtn.addEventListener('click', async function() {
+        saveBtn.disabled = true;
+        saveBtn.innerText = 'Сохранение...';
+
         const formData = new FormData();
         formData.append('delete_ids', JSON.stringify(deletedWordIds));
-        // Берем CSRF-токен прямо из куки или мета-тега
         formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
 
-        // Магия sendBeacon: браузер ГАРАНТИРОВАННО доставит этот POST-запрос на бэк,
-        // даже если вкладку закрыли крестиком!
-        navigator.sendBeacon('/word/bulk_destroy/', formData);
-    }
-});
+        try {
+            await fetch('/word/bulk_destroy/', {
+                method: 'POST',
+                body: formData
+            });
+            deletedWordIds = [];
+            window.location.reload(); 
+        } catch (error) {
+            console.error('Ошибка при сохранении:', error);
+            alert('Не удалось сохранить изменения. Проверьте интернет-соединение.');
+            saveBtn.disabled = false;
+            saveBtn.innerText = 'Сохранить изменения';
+        }
+    });
+}
+
+
+
