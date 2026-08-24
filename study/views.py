@@ -14,7 +14,7 @@ from word.services import get_all_word_ids, get_available_words_count, get_range
 class CreateRoom(FormView):
     
     form_class = ParametersCreateRoomForm
-    template_name = "word/create_room.html"
+    template_name = "study/create_room.html"
     
     def get_context_data(self, **kwargs) -> dict:
         """Получает контекст и добавляет поле с количеством слов"""
@@ -45,7 +45,7 @@ class CreateRoom(FormView):
 class RepeatRoom(FormView):
 
     form_class = RepeatRoomForm
-    template_name = "word/room.html"
+    template_name = "study/room.html"
 
     def render_to_response(self, context: dict[str, Any], **response_kwargs: Any) -> HttpResponse:
         # Работаем с HTMX в форме будет триггер, если будет отправлен POST с формы то HX-Request заголовок будет
@@ -106,7 +106,7 @@ class RepeatRoom(FormView):
 class ReverseRepeatRoom(FormView):
 
     form_class = RepeatRoomForm
-    template_name = "word/reverse_room.html"
+    template_name = "study/reverse_room.html"
 
     def render_to_response(self, context: dict[str, Any], **response_kwargs: Any) -> HttpResponse:
             # Работаем с HTMX в форме будет триггер, если будет отправлен POST с формы то HX-Request заголовок будет
