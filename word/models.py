@@ -23,7 +23,7 @@ PART_OF_SPEECH = [
 class Word(models.Model):
     word = models.CharField(max_length=255, verbose_name="English word", blank=False)
     part_of_speech = models.CharField(max_length=20, choices=PART_OF_SPEECH, verbose_name="Part of speech", default="unknown")
-    transcription = models.CharField(max_length=255, verbose_name="Transcription", blank=True, null=True)
+    transcription = models.CharField(max_length=150, verbose_name="Transcription", blank=True)
 
     slug = models.SlugField(blank=True, db_index=True, max_length=150, unique=True, verbose_name="Slug name")
     # translation = models.CharField(max_length=255, verbose_name="Translation", blank=False)
