@@ -1,78 +1,9 @@
 import json
-from typing import Optional
+
 from django.db.models import QuerySet, Q
 from django.core.exceptions import ValidationError
 
-from word.models import Word, Translation
-
-
-def check_word_translation(user_answer: str, word_id: int) -> bool:
-    """
-    Проверяет ответ пользователя на совпадение с сохраненными переводами слова.
-
-    Берет объект слова из базы данных по его идентификатору и сравнивает
-    введенный пользователем текст со всеми связанными вариантами перевода
-    в модели Translation. Сравнение производится без учета регистра.
-
-    Args:
-        user_answer (str): Строка с ответом (переводом), введенная пользователем.
-        word_id (int): Идентификатор проверяемого слова в модели Word.
-        
-    Returns:
-        bool: True, если ответ совпал хотя бы с одним корректным переводом,
-              иначе False.
-    """
-    # Доработать приемку от пользователя нескольких переводов иностранного слова
-    answer = user_answer.strip().lower()
-    translation_check = Translation.objects.filter(word_id=word_id, text__iexact=answer).exists() 
-
-    return translation_check 
-
-
-def check_word_answer(user_answer: str, word_id: int) -> bool:
-    """
-    Проверяет ответ пользователя на совпадение с оригинальным изучаемым словом.
-
-    Ищет в базе данных запись с указанным идентификатором и проверяет,
-    совпадает ли введенный пользователем текст с полем оригинального 
-    иностранного слова. Сравнение производится без учета регистра.
-
-    Args:
-        user_answer (str): Строка с ответом (изучаемым словом), введенная пользователем.
-        word_id (int): Идентификатор проверяемого слова в модели Word.
-
-    Returns:
-        bool: True, если ответ совпал с оригинальным словом, иначе False.
-    """
-
-    answer = user_answer.strip()
-    word_check = Word.objects.filter(id=word_id, word__iexact=answer).exists()
-    
-    return word_check
-
-
-def remove_word_from_session(session: dict, word_id: int) -> list:
-    """
-    Удаляет идентификатор слова из списка текущей сессии тренировки.
-
-    Ищет переданный word_id в массиве идентификаторов слов, закрепленных
-    за текущим раундом повторения в сессии пользователя. Если ID найден,
-    удаляет его из списка, чтобы слово больше не выводилось в текущей комнате.
-
-    Args:
-        session (dict): Словарь текущей сессии Django (request.session).
-        word_id (int): Идентификатор угаданного слова в модели Word.
-
-    Returns:
-        list[int]: Обновленный список идентификаторов слов, оставшихся
-                   для повторения в текущей сессии.
-    """
-    words_ids = session.get("words_ids", [])
-        
-    if word_id in words_ids:
-        words_ids.remove(word_id)
-    
-    return words_ids
+from word.models import Word
 
 
 def pull_out_words(words_ids: list[int]) -> QuerySet[Word]:
@@ -96,60 +27,7 @@ def pull_out_words(words_ids: list[int]) -> QuerySet[Word]:
 
     return Word.objects.filter(id__in=words_ids).prefetch_related("translation_set")
 
-
-def get_next_practice_word(words_ids: list[int]) -> Optional[Word]:
-    """
-    Извлекает объект следующего слова для текущей сессии тренировки.
-
-    Берет идентификатор последнего элемента из списка слов сессии и выполняет
-    точечный запрос к базе данных. Если слово успешно найдено, возвращает его
-    экземпляр для отображения в интерфейсе тренировочной комнаты.
-
-    Args:
-        words_ids (list[int]): Список идентификаторов слов, оставшихся
-                               для повторения в текущей сессии.
-
-    Returns:
-        Optional[Word]: Объект Word, если он успешно найден в базе данных.
-                        Возвращает None, если список ID пуст или запись 
-                        была удалена из базы.
-    """
     
-    if not words_ids:
-        return None
-    
-    next_word_id = words_ids[-1]
-
-    try:
-        # можно модорнезировать и тянуть только нужные поля в будущем
-        return Word.objects.get(id=next_word_id)
-    except Word.DoesNotExist:
-        return None
-    
-
-def get_next_practice_word_with_translations(words_ids: list[int]) -> Optional[Word]:
-    """
-    Извлекает объект следующего слова вместе с его вариантами перевода.
-
-    Args:
-        words_ids (list[int]): Список уникальных идентификаторов слов, 
-                               оставшихся в текущей сессии повторения.
-
-    Returns:
-        Optional[Word]: Объект Word со связанными переводами в случае успеха.
-                        Возвращает None, если список пуст или слово удалено.
-    """
-    if not words_ids:
-        return None
-    
-    next_word_id = words_ids[-1]
-
-    try:
-        return Word.objects.prefetch_related("translation_set").get(id=next_word_id)
-    except Word.DoesNotExist:
-        return None
-    
-
 def get_available_words_count() -> int:
     """
     Возвращает общее количество слов, доступных для тренировки.

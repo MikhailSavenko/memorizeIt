@@ -5,7 +5,10 @@ from django.views.generic import FormView
 from django.shortcuts import redirect
 
 from study.forms import ParametersCreateRoomForm, RepeatRoomForm
+from study.services import remove_word_from_session, get_next_practice_word, get_next_practice_word_with_translations, check_word_answer, check_word_translation
+
 from word.models import Word
+from word.services import get_all_word_ids, get_available_words_count, get_range_word_ids
 
 
 class CreateRoom(FormView):

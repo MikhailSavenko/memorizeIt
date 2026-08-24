@@ -4,15 +4,15 @@ from django.db.models.query import QuerySet
 from django.http import HttpRequest
 from django.http.response import HttpResponse as HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
-from django.views.generic import CreateView, FormView, ListView, DetailView, UpdateView, DeleteView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.db import transaction
 from django.core.exceptions import ValidationError
 from django.views.decorators.http import require_POST
 
-from word.forms import WriteWordForm, ParametersCreateRoomForm, RepeatRoomForm, TranslationInlineFormSet, SearchAliveForm, SearchDictForm
+from word.forms import WriteWordForm, TranslationInlineFormSet, SearchAliveForm, SearchDictForm
 from word.models import Word
-from word.services import bulk_delete_words_by_ids, calculate_target_page_and_id, check_word_answer, get_all_word_ids, get_available_words_count, check_word_translation, get_next_practice_word_with_translations, get_range_word_ids, get_searched_word, parse_and_validate_word_ids_json, remove_word_from_session, get_next_practice_word
+from word.services import bulk_delete_words_by_ids, calculate_target_page_and_id, get_searched_word, parse_and_validate_word_ids_json
 
 
 def search(request):
