@@ -2,7 +2,7 @@
 <div class="d-flex flex-column align-items-center text-center py-4 w-100">
   <p class="display-3 fw-bold mb-3">Congratulations!</p>
   <p class="display-4 tex-muted mb-4">You successfully finished repeating the words in this room 🤯</p>
-  <a href="{% url 'word:create_room' %}" class="btn btn-primary btn-lg">Create New Room</a>
+  <a href="{% url 'study:create_room' %}" class="btn btn-primary btn-lg">Create New Room</a>
 </div>
 {% else %}
   <form hx-post="{{ request.path }}" hx-target="#word-card-container" hx-swap="innerHTML">

@@ -107,8 +107,8 @@ class CreateRoom(FormView):
         self.request.session["words_ids"] = all_word_ids
 
         if reverse:
-            return redirect("word:reverse_room")
-        return redirect("word:room")
+            return redirect("study:reverse_room")
+        return redirect("study:room")
 
 
 class RepeatRoom(FormView):
