@@ -38,10 +38,10 @@ class Word(models.Model):
     difficulty_level = models.IntegerField(default=0, verbose_name="Difficulty level")
 
     class Meta:
-        constraints = [
-            # Добавить user для уникальности
-            models.UniqueConstraint(fields=["word", "part_of_speech"], name="unique_word_part_of_speech")
-        ]
+        # Добавить user для уникальности
+        # constraints = [
+        #     models.UniqueConstraint(fields=["word", "user"], name="unique_word_user")
+        # ]
         ordering = ["id"]
 
     def __str__(self):
