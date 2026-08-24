@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.utils.text import slugify
 
 PART_OF_SPEECH = [
+    ("unknown", "Unknown"),
     ("noun", "Noun"),
     ("adjective", "Adjective"),
     ("verb", "Verb"),
@@ -13,13 +14,15 @@ PART_OF_SPEECH = [
     ("particle", "Particle"),
     ("preposition", "Preposition"),
     ("pronoun", "Pronoun"),
-    ("another", "Another")
+    ("conjunction", "Conjunction"),
+    ("interjection", "Interjection"),
+    ("idiom", "Idiom"),  
 ]
 
 
 class Word(models.Model):
     word = models.CharField(max_length=255, verbose_name="English word", blank=False)
-    part_of_speech = models.CharField(max_length=255, choices=PART_OF_SPEECH, verbose_name="Part of speech", default="another", blank=True)
+    part_of_speech = models.CharField(max_length=20, choices=PART_OF_SPEECH, verbose_name="Part of speech", default="unknown")
     transcription = models.CharField(max_length=255, verbose_name="Transcription", blank=True, null=True)
 
     slug = models.SlugField(blank=True, db_index=True, max_length=150, unique=True, verbose_name="Slug name")
