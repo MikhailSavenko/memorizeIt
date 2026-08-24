@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any
 
 from django.db.models.query import QuerySet
 from django.http import HttpRequest
@@ -32,10 +32,6 @@ def search(request):
 
     return render(request, "partials/search_alive.html", context=context)
     
-
-def index(request):
-    return render(request, "word/index.html")
-
 
 #Авторизация login_required
 @require_POST
