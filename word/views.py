@@ -58,15 +58,15 @@ class WriteWord(CreateView):
 
         context["translation_formset"] = TranslationInlineFormSet(
             self.request.POST or None
-        )
+        ) # тут мы при какой-либо ошибке вернем значения введенные в переводы
 
         return context
     
     def form_valid(self, form):
         formset = TranslationInlineFormSet(self.request.POST)
 
-        if not formset.is_valid():
-            return self.form_invalid(form)
+        if not formset.is_valid(): # валидация самой формы form.is_valid делается на уровне CreateView сама под капотом
+            return self.form_invalid(form) # тут мы при невалидном формсете вернем значения самой формы
         
         with transaction.atomic():
             self.object = form.save()

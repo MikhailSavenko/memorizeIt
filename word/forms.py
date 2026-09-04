@@ -1,4 +1,5 @@
 from django import forms
+from django.urls import reverse_lazy
 
 from word.models import Word, Translation
 from word.clients import transcription_by_wordsapi
@@ -40,7 +41,11 @@ class WriteWordForm(forms.ModelForm):
             }),
             "word": forms.TextInput(attrs={
                 "class": "form-control",
-                "placeholder": "Write word"
+                "placeholder": "Write word",
+                "hx-get": reverse_lazy("word:search"),
+                "hx-trigger": "keyup changed delay:1000ms",
+                "hx-target": "#word-alert-container",
+                "hx-vals": "js:{text: event.target.value}"
             }),
             "transcription": forms.TextInput(attrs={
                 "class": "form-control",

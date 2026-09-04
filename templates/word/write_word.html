@@ -17,23 +17,29 @@
           Edit the word ✏️
         {% endif %}
       </div>
-        
+        <!-- Ошибки формы в целом, не связанные с конкретным полем -->
         {% if form.non_field_errors %}          
           {% for error in form.non_field_errors %} 
             <div class="alert alert-danger">{{ error }}</div>
           {% endfor %}
         {% endif %}
-
+        <!-- Форма слова, без переводов -->
         {% for field in form %}
           <div class="mb-3">
             {{ field }}
+            <!-- Ошибки конкретного поля -->
             {% if field.errors %}
               <div class="text-danger small mb-1">{{ field.errors.0 }}</div>
             {% endif %}
           </div>
+            <!-- ПОДСКАЗКА ДЛЯ ПОЛЬЗОВАТЕЛЯ - ТАКОЕ СЛОВО СУЩЕСТВУЕТ через HTMX -->
+            {% if field.name == "word" %}
+              <div id="word-alert-container" class="mb-3"></div>
+            {% endif %}
+
         {% endfor %}
         
-        <!-- Ошибки формсета всего в целом -->
+        <!-- Ошибки формсета(переводы) всего в целом -->
         {% if translation_formset.non_form_errors %}
           <div class="alert alert-danger p-2 small mb-3">
             {% for error in translation_formset.non_form_errors %}
@@ -41,16 +47,16 @@
             {% endfor %}
           </div>
         {% endif %}
-
+        <!-- Управление формсетом -->
         {{ translation_formset.management_form }}
         <div class="translation-block mb-4">
-
           <div id="translations-container">
+
             {% for translation_form in translation_formset %}
               <div class="mb-3 translation-form-row d-flex align-items-center gap-3">
                 {{ translation_form.id }}
   
-                  <!-- Поле ввода перевода забирает всё свободное место слева -->
+                  <!-- Текст одного(первого, потому что в настройках у нас он один) формсета - перевода, а также его возникающие ошибки -->
                   <div class="flex-grow-1">
                     {{ translation_form.text }}
                     {% if translation_form.text.errors %}
@@ -58,23 +64,25 @@
                     {% endif %}
                   </div>
 
-                  <!-- Красивый свитч удаления справа от инпута -->
+                  <!-- Красивый свитч удаления справа от инпута если это ОБНОВЛЕНИЕ, а не создание-->
                   {% if translation_formset.can_delete and translation_form.instance.pk %}
                     <div class="form-check form-switch m-0">
-                      <!-- Добавляем класс form-check-input для стиля Bootstrap -->
+                      <!-- Сам рычажок который записывает html_name и id поля перевода -->
                       <input type="checkbox" 
                              name="{{ translation_form.DELETE.html_name }}" 
                              id="{{ translation_form.DELETE.id_for_label }}" 
                              class="form-check-input">
+                      <!-- Слово рядом с рычажком, тоже кликабельное и связывает его с нашим рычажком через for = id -->
                       <label class="form-check-label" for="{{ translation_form.DELETE.id_for_label }}">
                         Delete
                       </label>
                     </div>
                   {% endif %}
+
               </div>
             {% endfor %}
           </div>
-          
+          <!-- Шаблон пустого формсета перевода для кнопки Добавить перевод внизу -->
           <template id="translation-template">
             <div class="mb-2 translation-form-row">
               {{ translation_formset.empty_form.id }}
@@ -85,7 +93,7 @@
               {% endif %}
             </div>
           </template>
-
+          <!-- Кнопка Добавить формсет перевод -->
           <button type="button"
                   class="btn btn-link btn-sm mt-1 text-success text-decoration-none p-0 fw-semibold"
                   hx-on:click="
