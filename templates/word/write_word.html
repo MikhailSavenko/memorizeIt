@@ -27,16 +27,18 @@
         {% for field in form %}
           <div class="mb-3">
             {{ field }}
+
             <!-- Ошибки конкретного поля -->
             {% if field.errors %}
               <div class="text-danger small mb-1">{{ field.errors.0 }}</div>
             {% endif %}
-          </div>
-            <!-- ПОДСКАЗКА ДЛЯ ПОЛЬЗОВАТЕЛЯ - ТАКОЕ СЛОВО СУЩЕСТВУЕТ через HTMX -->
+
+            <!-- ПОДСКАЗКА ДЛЯ ПОЛЬЗОВАТЕЛЯ - ТАКОЕ СЛОВО СУЩЕСТВУЕТ через HTMX в forms.py -->
             {% if field.name == "word" %}
-              <div id="word-alert-container" class="mb-3"></div>
+              <div id="word-alert-container"></div>
             {% endif %}
 
+          </div>
         {% endfor %}
         
         <!-- Ошибки формсета(переводы) всего в целом -->
