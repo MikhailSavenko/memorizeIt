@@ -42,7 +42,7 @@ class WriteWordForm(forms.ModelForm):
             "word": forms.TextInput(attrs={
                 "class": "form-control",
                 "placeholder": "Write word",
-                "hx-get": reverse_lazy("word:search"),
+                "hx-get": reverse_lazy("word:check_duplicates"),
                 "hx-trigger": "keyup changed delay:1000ms",
                 "hx-target": "#word-alert-container",
                 "hx-vals": "js:{text: event.target.value}"

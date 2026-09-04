@@ -33,6 +33,24 @@ def search(request):
     return render(request, "partials/search_alive.html", context=context)
     
 
+def check_word_duplicates(request):
+    form = SearchAliveForm(request.GET or None)
+    search_text = ""
+    words = []
+
+    if form.is_valid():
+
+        search_text = form.cleaned_data["text"]
+        words = get_searched_word(text=search_text)
+    
+    context = {
+        "query": search_text,
+        "words": words
+    }
+
+    return render(request, "partials/word_duplicates_alert.html", context=context)
+
+
 #Авторизация login_required
 @require_POST
 def word_bulk_delete(request):

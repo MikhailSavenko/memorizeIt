@@ -1,0 +1,16 @@
+<ul class="list-group shadow">
+  {% for word in words %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <div>
+        <strong class="text-primary">🔎 {{ word.word}}</strong>
+        <span class="mx-2 text-muted">—</span>
+        <span class="text-dark">{{ word.translations_string }}</span>
+      </div>
+      <span class="badge bg-secondary rounded-pill">{{ word.part_of_speech }}</span>
+    </li>
+  {% empty %}
+    {% if query %}
+      <li class="list-group-item text-muted">Nothing was found for the query "{{ query }}" 🥲</li>
+    {% endif %}  
+  {% endfor %}
+</ul>
