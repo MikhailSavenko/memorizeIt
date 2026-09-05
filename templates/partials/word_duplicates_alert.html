@@ -1,7 +1,8 @@
 <ul class="list-group shadow">
   {% if words %}
   <li class="list-group-item d-flex justify-content-between align-items-center text-muted" style="font-size: 0.95rem; line-height: 1.4; background-color: #fafafa;">
-    This word already exists. To add a new translation to the existing part of speech, click below to update:
+      <div class="flex-grow-1 pt-1">This word already exists. To add a new translation to the existing part of speech, click below to update:</div>
+    <button class="btn-close" style="font-size: 0.80rem; padding: 0; margin-top: 0px;" aria-label="Close" hx-on:click="this.closest('ul').remove()"></button>
   </li>
   {% endif %}
   {% for word in words %}
