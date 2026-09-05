@@ -9,9 +9,9 @@
     z-index: 10; /* МАГИЯ: вытаскиваем карточку на самый верхний слой! */
   }
 </style>
-<ul class="list-group shadow">
+<ul class="list-group border-0 bg-transparent m-0 p-0" style="background-color: transparent !important;">
   {% if words %}
-  <li class="list-group-item d-flex justify-content-between align-items-center text-muted" style="font-size: 0.95rem; line-height: 1.4; background-color: #fafafa;">
+  <li class="list-group-item d-flex justify-content-between align-items-center text-muted rounded-3 overflow-hidden" style="font-size: 0.95rem; line-height: 1.4; background-color: #fafafa;">
       <div class="flex-grow-1 pt-1">This word already exists. To add a new translation to the existing part of speech, click below to update:</div>
     <button class="btn-close" style="font-size: 0.80rem; padding: 0; margin-top: 0px;" aria-label="Close" hx-on:click="this.closest('ul').remove()"></button>
   </li>
