@@ -10,12 +10,12 @@
     <!-- Обернули таблицу в контейнер для контроля максимальной ширины -->
     <div class="dictionary-content dictionary-table-container">
       <h2 class="display-4 text-center mb-4">Your dictionary 📗</h2>
-      
+      <!-- Поиск по таблице -->
       <form action="{% url 'word:dictionary' %}" method="get">
         <input type="text" name="search_dict" placeholder="Search by №, word and translation" class="form-control mb-4" />
       </form>
 
-      <!-- Убрали Bootstrap-классы table/table-bordered и дали свой чистый класс -->
+      <!-- Объявляем таблицу -->
       <table class="dictionary-clean-table">
         <thead>
           <tr>
@@ -27,7 +27,9 @@
             <th class="col-actions">Action</th>
           </tr>
         </thead>
+        <!-- Тело таблицы -->
         <tbody>
+          <!-- Высчитывание номеров слов на странице исходя из пагинации -->
           {% widthratio page_obj.number|add:"-1" 1 page_obj.paginator.per_page as start_index%}
           {% for word in page_obj %}
             <!-- Каждая строка — независимая белая плашка -->
@@ -43,7 +45,7 @@
               <td class="cell-pos"><span class="badge-part-of-speech-mini">{{ word.part_of_speech }}</span></td>
               <td class="cell-transcription">{% if word.transcription %}[{{ word.transcription }}]{% else %}—{% endif %}</td>
               <td class="cell-translation">{{ word.translations_string }}</td>
-              
+               <!-- Кнопка выделить для удаления - мусорка -->
               <td class="cell-actions">
                 <button class="btn-delete-table-row" 
                         type="button"
@@ -56,6 +58,7 @@
           {% endfor %}
         </tbody>
       </table>
+      <!-- Кнопка для общего удаления слов - сохранения изменений -->
         <div id="save-changes-container" class="save-changes-wrapper">
           <button id="save-deletes-btn" class="btn btn-success">
               Save changes
