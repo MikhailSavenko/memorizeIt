@@ -60,6 +60,7 @@ def word_bulk_delete(request):
         parsed_data = parse_and_validate_word_ids_json(raw_data)
         bulk_delete_words_by_ids(parsed_data)
     except ValidationError as e:
+        # логируем ошибку
         return JsonResponse({"error": e.message}, status=400)
     
     return JsonResponse({"status": "success"}, status=200)

@@ -38,15 +38,18 @@ if (saveBtn) {
         formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
 
         try {
-            await fetch('/word/bulk_destroy/', {
+            const response = await fetch('/word/bulk_destroy/', {
                 method: 'POST',
                 body: formData
             });
+            if (!response.ok) {
+                throw new Error('No save. Server validation failed.'); // Это принудительно отправит код в блок catch!
+            }
             deletedWordIds = [];
             window.location.reload(); 
         } catch (error) {
             console.error('Error in save:', error);
-            alert('No save. Bad Internet connect.');
+            alert('No save. Sorry. Try later again.');
             saveBtn.disabled = false;
             saveBtn.innerText = 'Save changes';
         }
