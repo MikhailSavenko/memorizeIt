@@ -71,17 +71,23 @@ class WriteWord(CreateView):
     template_name = "word/write_word.html"
     success_url = reverse_lazy("word:new_word")
 
+    @property
+    def translation_formset(self):
+        if not hasattr(self, "_cached_formset"):
+            self._cached_formset = TranslationInlineFormSet(
+                self.request.POST or None
+            )
+        return self._cached_formset
+
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-
-        context["translation_formset"] = TranslationInlineFormSet(
-            self.request.POST or None
-        ) # тут мы при какой-либо ошибке вернем значения введенные в переводы
+        # тут мы при какой-либо ошибке вернем значения введенные в переводы или пустой формсет
+        context["translation_formset"] = self.translation_formset 
 
         return context
     
     def form_valid(self, form):
-        formset = TranslationInlineFormSet(self.request.POST)
+        formset = self.translation_formset
 
         if not formset.is_valid(): # валидация самой формы form.is_valid делается на уровне CreateView сама под капотом
             return self.form_invalid(form) # тут мы при невалидном формсете вернем значения самой формы
