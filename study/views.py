@@ -91,16 +91,17 @@ class RepeatRoom(FormView):
 
             return self.form_invalid(form)
         
-        # если верно, удалим слово из сессии и вызовем get для вызова get_context_data(достать новое слово) и render_ro_response(перезагрузить часть страницы)
+        # если верно, удалим слово из сессии и вызовем контекст и отрендерим часть страницы
         session = self.request.session
         words_ids = remove_word_from_session(session=session, word_id=word_id)
         
         self.request.session["words_ids"] = words_ids
-        # Заменим метод за ГЕТ чтобы не было предыдущего ответа в форме
-        self.request.method = "GET"
+        # Вызываем контекст для получения нового слова
+        context_new = self.get_context_data()
+        context_new["form"] = self.get_form_class()()
 
-        # Вызываем get чтобы вызвать render_ro_response
-        return self.get(self.request)
+        # Вызываем render_ro_response для перезагрузки части страницы
+        return self.render_to_response(context=context_new)
 
 
 class ReverseRepeatRoom(FormView):
@@ -151,14 +152,15 @@ class ReverseRepeatRoom(FormView):
 
             return self.form_invalid(form)
         
-        # если верно, удалим слово из сессии и перейдем снова на room
+        # если верно, удалим слово из сессии, получим новое слово и обновим часть страницы
         session = self.request.session
         words_ids = remove_word_from_session(session=session, word_id=word_id)
         
         self.request.session["words_ids"] = words_ids
-        # Заменим метод за ГЕТ чтобы не было предыдущего ответа в форме
-        self.request.method = "GET"
-        
-        # Вызываем get чтобы вызвать render_ro_response
-        return self.get(self.request)
+        # Вызываем контекст для получения нового слова
+        context_new = self.get_context_data()
+        context_new["form"] = self.get_form_class()()
+
+        # Вызываем render_ro_response для перезагрузки части страницы
+        return self.render_to_response(context=context_new)
     
