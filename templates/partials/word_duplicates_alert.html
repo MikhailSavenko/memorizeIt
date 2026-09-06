@@ -17,7 +17,11 @@
   </li>
   {% endif %}
   {% for word in words %}
+    {% if dict_search %}
+    <a href="{% url 'word:dictionary' %}?search_dict={{ word.id }}" hx-boost="false" class="text-decoration-none d-block">
+    {% else %}
     <a href="{% url 'word:word_update' word.slug %}" class="text-decoration-none d-block">
+    {% endif %}
       <li class="list-group-item d-flex justify-content-between align-items-center duplicate-item rounded-3">
         <div class="d-flex align-items-center gap-2">
           <!-- 1. Жирное слово -->

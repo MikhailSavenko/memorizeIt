@@ -120,6 +120,7 @@ class Dictionary(ListView):
             context["highlight_id"] = self.highlight_id
 
         if self.duplicates_word:
+            context["dict_search"] = True
             context["words"] = self.duplicates_word
 
         return context
