@@ -92,29 +92,58 @@ def get_searched_word(text: str) -> QuerySet[Word]:
     return queryset.prefetch_related("translation_set")
 
 
-def calculate_target_page_and_id(search_query: str, paginate_by: int) -> tuple[int | None, int | None]:
+def get_word_id_by_query_int(search_query_id: int) -> int | None:
     """
-    Принимает поисковый запрос и лимит страниц.
-    Ищет слово (по №, тексту или переводу) и рассчитывает страницу для прыжка.
+    Принимает порядковый номер слова в словаре и возвращает его Word.id.
+
     В будущем сюда добавится фильтрация по конкретному пользователю:
         Word.objects.filter(user=user)
-    """
     
-    word_id = None
-    target_page = None
+    Args:
+        search_query_id (int): Порядковый номер слова (начиная с 1).
 
-    if search_query.isdigit():
-        target_index = int(search_query) - 1
-        word_id = Word.objects.all().values_list("id", flat=True)[target_index: target_index+1].first()
+    Returns:
+        int | None: Валидный ID слова в базе данных или None, если не найдено.
+    """
+    if search_query_id < 1:
+        return None
+    
+    target_index = search_query_id - 1
+    word_id = Word.objects.all().values_list("id", flat=True)[target_index: target_index+1].first()
+    return word_id
 
-    else:
-        word_id = Word.objects.filter(Q(word__icontains=search_query)| Q(translation__text__icontains=search_query)).distinct().values_list("id", flat=True).first()
 
-    if word_id:    
-        position = Word.objects.filter(id__lt=word_id).count()
-        target_page = (position // paginate_by) + 1
+def get_word_list_id_by_query_str(search_query: str) -> list[int]:
+    """
+    Принимает текстовый поисковый запрос и ищет слова по значению или переводу.
 
-    return word_id, target_page
+    В будущем сюда добавится фильтрация по конкретному пользователю:
+        Word.objects.filter(user=user)
+    
+    Args:
+        search_query (str): Поисковый запрос пользователя (слово или перевод).
+
+    Returns:
+        list[int]: Список идентификаторов (Word.id) подходящих слов.
+    """
+    word_ids = Word.objects.filter(Q(word__icontains=search_query)| Q(translation__text__icontains=search_query)).distinct().values_list("id", flat=True)
+    return list(word_ids)
+
+
+def calculate_target_page(word_id: int, paginate_by: int) -> int:
+    """
+    Принимает идентификатор слова и лимит пагинации, высчитывая номер страницы для перехода.
+
+    Args:
+        word_id (int): Идентификатор (Word.id) искомого слова.
+        paginate_by (int): Количество отображаемых слов на одной странице словаря.
+
+    Returns:
+        int: Порядковый номер целевой страницы (начиная с 1).
+    """
+    position = Word.objects.filter(id__lt=word_id).count()
+    target_page = (position // paginate_by) + 1
+    return target_page
 
 
 def parse_and_validate_word_ids_json(row_ids_data: str) -> list[int]:
