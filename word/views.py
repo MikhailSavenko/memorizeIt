@@ -12,7 +12,7 @@ from django.views.decorators.http import require_POST
 
 from word.forms import WriteWordForm, TranslationInlineFormSet, SearchAliveForm, SearchDictForm
 from word.models import Word
-from word.services import bulk_delete_words_by_ids, calculate_target_page_and_id, get_searched_word, parse_and_validate_word_ids_json
+from word.services import bulk_delete_words_by_ids, get_searched_word, parse_and_validate_word_ids_json, get_word_id_by_query_int, get_word_list_id_by_query_str, calculate_target_page
 
 
 def search(request):
@@ -108,6 +108,7 @@ class Dictionary(ListView):
     paginate_by = 29
 
     highlight_id = None
+    duplicates_word = None
 
     def get_queryset(self) -> QuerySet[Word]:
         return Word.objects.prefetch_related("translation_set").all()
@@ -118,6 +119,9 @@ class Dictionary(ListView):
         if self.highlight_id:
             context["highlight_id"] = self.highlight_id
 
+        if self.duplicates_word:
+            context["words"] = self.duplicates_word
+
         return context
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
@@ -127,9 +131,25 @@ class Dictionary(ListView):
             search_query = form.cleaned_data.get("search_dict")
 
             if search_query:
+                word_id = None
+                target_page = None
 
-                word_id, target_page = calculate_target_page_and_id(search_query=search_query, paginate_by=self.paginate_by)
+                if search_query.isdigit():
+                    word_id = get_word_id_by_query_int(search_query_id=int(search_query))
+                    if word_id:
+                        target_page = calculate_target_page(word_id=word_id, paginate_by=self.paginate_by)
 
+                else:
+                    word_ids = get_word_list_id_by_query_str(search_query=search_query)
+
+                    if len(word_ids) > 1:
+                        words = self.get_queryset().filter(id__in=word_ids)
+                        self.duplicates_word = words
+
+                    elif len(word_ids) == 1:
+                        word_id = word_ids[0]
+                        target_page = calculate_target_page(word_id=word_id, paginate_by=self.paginate_by)
+                    
                 if word_id and target_page:
                     request.GET = request.GET.copy()
                     request.GET["page"] = str(target_page)

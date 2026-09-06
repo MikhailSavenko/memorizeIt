@@ -14,7 +14,10 @@
       <form action="{% url 'word:dictionary' %}" method="get">
         <input type="text" name="search_dict" placeholder="Search by №, word and translation" class="form-control mb-4" />
       </form>
-
+        {% if words %}
+          {% include "partials/word_duplicates_alert.html" %}
+        {% endif %}
+      
       <!-- Объявляем таблицу -->
       <table class="dictionary-clean-table">
         <thead>
