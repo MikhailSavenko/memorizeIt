@@ -12,7 +12,7 @@ from django.views.decorators.http import require_POST
 
 from word.forms import WriteWordForm, TranslationInlineFormSet, SearchAliveForm, SearchDictForm
 from word.models import Word
-from word.services import bulk_delete_words_by_ids, get_searched_word, parse_and_validate_word_ids_json, get_word_id_by_query_int, get_word_list_id_by_query_str, calculate_target_page
+from word.services import get_all_word_ids, bulk_delete_words_by_ids, get_searched_word, parse_and_validate_word_ids_json, get_word_id_by_query_int, get_word_list_id_by_query_str, calculate_target_page
 
 
 def search(request):
@@ -145,13 +145,18 @@ class Dictionary(ListView):
 
                     if len(word_ids) > 1:
                         words = self.get_queryset().filter(id__in=word_ids)
+                        all_word_ids = get_all_word_ids() 
+                        for word in words:
+                            vir_num = all_word_ids.index(word.pk) + 1
+                            setattr(word, "virtual_number", vir_num)
+
                         self.duplicates_word = words
 
                     elif len(word_ids) == 1:
                         word_id = word_ids[0]
                         target_page = calculate_target_page(word_id=word_id, paginate_by=self.paginate_by)
                     
-                if word_id and target_page:
+                if word_id is not None and target_page is not None:
                     request.GET = request.GET.copy()
                     request.GET["page"] = str(target_page)
 
